@@ -1,0 +1,11 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <p>Name : {{ group.name }}</p>
+            <p>Description : {{ group.description }}</p>
+            <p>{{ 'group.show.name'|trans }}: {{ group.getName() }}</p>
+        </div>
+    </div>
+</div>

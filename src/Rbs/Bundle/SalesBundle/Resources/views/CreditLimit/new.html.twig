@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} : Credit Limit {% endblock %}
+
+{% block body %}
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    Credit Limit Add
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ include('_elements/_back_to_list_button.html.twig', {url: path('credit_limit_list'), label: 'Back to List', 'icon': 'chevron-left'}) }}
+
+                {{ form_start(form) }}
+
+                <div class="form-group" style="margin-bottom: 30px;">
+                    <label class="col-md-2 control-label" style="font-weight:bolder;margin-left: 10px;">Agent:</label>
+                    <div class="col-md-4" style="margin-top: 5px;">
+                        {{ form_widget(form.agent) }}
+                    </div>
+                    {{ form_errors(form.agent) }}
+                </div>
+
+                <div class="row col-md-11 right" style="float: right;">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set i = 0 %}
+                        {% for target in form.child_entities %}
+                            <tr>
+                                <td class="col-md-1 bold">{{ categories[i] }}</td>
+                                <td class="col-md-1">{{ form_widget(target.amount) }}</td>
+                                <td class="col-md-2">{{ form_widget(target.startDate) }}</td>
+                                <td class="col-md-2">{{ form_widget(target.endDate) }}</td>
+                            </tr>
+                            {% set i = i + 1 %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets  filter='cssrewrite'
+    "assets/global/plugins/bootstrap-toastr/toastr.min.css"
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+{% endblock stylesheets %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    "assets/global/plugins/bootstrap-toastr/toastr.min.js"
+
+    "assets/global/plugins/jquery-validation/js/jquery.validate.min.js"
+    "assets/admin/pages/scripts/form-validation.js"
+    "bundles/rbssales/js/order.js"
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascripts %}
+
+{% block documentReady %}
+    {{ parent() }}
+
+    $(".month-year-picker").datepicker( {
+    format: "dd-mm-yyyy",
+    viewMode: "date",
+    minViewMode: "date",
+    autoclose: true
+    });
+
+{% endblock %}

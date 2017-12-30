@@ -1,0 +1,88 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : Damage Goods View {% endblock %}
+
+{% block body %}
+
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-globe"></i>Damage Goods View
+                </div>
+            </div>
+                <div class="portlet-body">
+
+                    <div class="col-md-12" style="margin-top: 25px;">
+
+                        <form action="{{ path('damage_goods_approve', { 'id': damageGood.id }) }}" method="post" novalidate="novalidate">
+
+                            <table class="table table-bordered table-striped">
+                                <tbody>
+                                    <tr>
+                                        <td class="col-md-1 bold">Verified By:</td>
+                                        <td class="col-md-1 bold">{{ damageGood.verifiedBy.username | default('') }}</td>
+                                    </tr>
+                                    {% if damageGood.approvedBy != null %}
+                                    <tr>
+                                        <td class="col-md-1 bold">Approved By:</td>
+                                        <td class="col-md-1 bold">{{ damageGood.approvedBy.username | default('') }}</td>
+                                    </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <td class="col-md-1 bold">Agent:</td>
+                                        <td class="col-md-1 bold">{{ damageGood.agent.user.username | default('') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-md-1 bold">Order Number:</td>
+                                        <td class="col-md-1 bold">{{ damageGood.orderRef.id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-md-1 bold">Amount:</td>
+                                        <td class="col-md-1 bold">{{ damageGood.amount }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-md-1 bold">File:</td>
+                                        <td class="col-md-1 bold">
+                                            {% if damageGood.path != null %}
+                                            <a class="btn btn-xs" href="{{ damageGood.getDownloadFilePath }}" target="_blank">
+                                                <i class="fa fa-file"></i>
+                                            </a>
+                                            {% else %} N/A
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-md-1 bold">Refund Amount:</td>
+                                        <td class="col-md-1 bold">
+                                            {% if damageGood.refundAmount == null or damageGood.refundAmount < 1 %}
+                                                <input name="refund" type="text" class="form-control"/>
+                                            {% else %}
+                                                {{ damageGood.refundAmount }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-md-1 bold" colspan="2"><input type="submit" value="Submit" class="btn blue"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </form>
+                    </div>
+
+                    <div style="clear: both"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

@@ -1,0 +1,36 @@
+{{ form_start(form, {'method': 'POST', attr: { novalidate: 'novalidate'}}) }}
+
+    <h4>User Profile Information</h4>
+
+    {{ form_row(form.profile.fullName) }}
+    {{ form_row(form.userType) }}
+    {{ form_row(form.profile.designation) }}
+    {{ form_row(form.profile.cellphone) }}
+    {{ form_row(form.profile.address) }}
+    {{ form_row(form.zilla, { 'attr': {'class': 'zilla-selector select2me form-control select2-offscreen', 'tabindex': '-1', 'title': 'ZillaZilla'} }) }}
+    {{ form_row(form.upozilla, { 'attr': {'class': 'thana-selector select2me form-control select2-offscreen', 'tabindex': '-1', 'title': 'Thana/UpoZilla'} }) }}
+    {{ form_row(form.parentId) }}
+    {{ form_row(form.groups) }}
+
+    <div class="form-group">
+        <label for="inputEmail12" class="col-md-2 control-label">Photo</label>
+        <div class="col-md-4">
+            <div class="input-icon">
+                <i class="fa fa-folder"></i>
+                {{ form_widget(form.profile.file, { 'attr': {'class': 'form-control'} }) }}
+            </div>
+        </div>
+    </div>
+
+    <hr>
+    <h4>User Login Information</h4>
+
+        {{ form_row(form.username, { 'attr': {'class': ''} }) }}
+        {{ form_row(form.plainPassword.first, { 'attr': {'class': ''} }) }}
+        {{ form_row(form.plainPassword.second, { 'attr': {'class': ''} }) }}
+        {{ form_row(form.email, { 'attr': {'class': ''} }) }}
+    <hr>
+
+    {{ form_row(form.submit, { 'attr': {'class': ''} }) }}
+
+{{ form_end(form) }}

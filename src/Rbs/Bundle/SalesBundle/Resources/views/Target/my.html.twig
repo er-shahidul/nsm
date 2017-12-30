@@ -1,0 +1,98 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : My Target {% endblock %}
+
+{% block body %}
+
+    <div class="modal fade" id="ajax" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{ asset('assets/global/img/loading-spinner-grey.gif') }}" alt="" class="loading">
+                    <span> &nbsp;&nbsp;Loading... </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="ajaxHistory" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{ asset('assets/global/img/loading-spinner-grey.gif') }}" alt="" class="loading">
+                    <span> &nbsp;&nbsp;Loading... </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-list"></i>My Target ( {{ user.username }} : {{ user.zilla.name }} )
+                </div>
+            </div>
+            <div class="portlet-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>SL</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Remaining</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Month</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for target in targets %}
+                        <tr>
+                            <td class="col-md-1 bold">{{ loop.index }}</td>
+                            <td class="col-md-1 bold">{{ target.category.categoryName }}</td>
+                            <td class="col-md-1 bold">{{ target.quantity }}</td>
+                            <td class="col-md-1 bold">{{ target.remaining }}</td>
+                            <td class="col-md-1 bold">{{ target.startDate | date('M Y') }}</td>
+                            <td class="col-md-1 bold">{{ target.endDate | date('M Y') }}</td>
+                            <td class="col-md-1 bold">{{ target.getMonthDifference() }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-list"></i>My SR List
+                </div>
+            </div>
+            <div class="portlet-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>SL</th>
+                            <th>SR Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for sr in srList %}
+                        <tr>
+                            <td class="col-md-1 bold">{{ loop.index }}</td>
+                            <td class="col-md-1">{{ sr.username }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

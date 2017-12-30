@@ -1,0 +1,2 @@
+parameters:
+    knp.doctrine_behaviors.blameable_subscriber.user_entity: Rbs\Bundle\UserBundle\Entity\User

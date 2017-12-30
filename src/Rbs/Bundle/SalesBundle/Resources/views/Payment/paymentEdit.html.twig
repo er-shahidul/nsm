@@ -1,0 +1,72 @@
+<div class="main-content">
+    {% set difference = date(payment.createdAt|date("Y/m/d", "Asia/Dhaka")).diff(date('now'|date("Y/m/d", "Asia/Dhaka"))) %}
+    {% set leftDays = difference.days %}
+    <div class="modal-header portlet-title blue">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h4 class="modal-title">{{ 7 > leftDays|number_format ? "Payment Edit" : "Payment Amount" }}</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="portlet box">
+
+                    <div class="portlet-body">
+                        <div class="no-footer">
+
+                            {% if 7 > leftDays|number_format %}
+                            <form name="amountEdit" action="{{ path('payment_edit', {id: payment.id}) }}" method="post" class="form-horizontal action-content-form">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label required">Amount</label>
+                                    <div class="col-sm-10">
+                                        <input type="number" step="any" class="form-control" value="{{ payment.amount }}" name="amount" id="amount" required="required"/>
+                                    </div>
+                                </div>
+
+                                {{ form_row(form.agentBankBranch) }}
+                                {{ form_row(form.bankAccount) }}
+                                <div class="form-actions">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="reset" class="btn btn-danger" value="Reset" name="reset" />
+                                        <input type="submit" onclick="return confirm('Are you sure?')" class="btn blue" value="Update" name="submit" />
+                                        <button title="Close" type="button" class="btn red" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+
+
+                                {{ form_widget(form._token) }}
+                            </form>
+                            {% else %}
+                                <table class="table-bordered table-striped table-condensed flip-content col-md-12">
+                                    <thead>
+                                    <tr>
+                                        <th class="col-md-2">Amount</th>
+                                        <th class="col-md-1">Comments</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            {{ payment.amount|number_format(2) }}
+                                        </td>
+                                        <td>
+                                            Amount Edit Date Expired
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            {% endif %}
+
+                            <div style="clear: both"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("amount").required = true;
+</script>

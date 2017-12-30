@@ -1,0 +1,105 @@
+<div class="main-content">
+    <div class="modal-header portlet-title blue">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h4 class="modal-title">Order Summary</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="portlet box">
+
+                    <div class="portlet-body">
+                        <div class="dataTables_wrapper no-footer">
+
+                            <table class="table col-md-6">
+                                <tr><th class="col-md-8">Order Number</th><td class="col-md-4">{{ order.id }}</td></tr>
+                                <tr><th>Agent Name</th><td>{{ order.agent.user.profile.fullName }}</td></tr>
+                                {% if order.createdBy is not null %}
+                                    <tr><th>Created By</th><td>{{ order.createdBy.username|default('') }}</td></tr>
+                                {% endif %}
+                                <tr><th>Order Amount</th><td>{{ order.totalAmount|number_format(2) }}</td></tr>
+                                <tr><th>Remarks</th><td>{{ order.remark }}</td></tr>
+                                <tr><th></th><td></td></tr>
+                            </table>
+                            <table class="table-bordered table-striped table-condensed flip-content col-md-12">
+                                <thead>
+                                <tr>
+                                    <th class="col-md-1">Sl</th>
+                                    <th class="col-md-7">Item</th>
+                                    {% if chickenCheck == 0 %}
+                                        <th class="text-center col-md-2">Quantity</th>
+                                        <th class="text-center col-md-2">Available</th>
+                                    {% else %}
+                                        <th class="text-center col-md-2">Order Quantity</th>
+                                        <th class="text-center col-md-2">Assigned Quantity</th>
+                                    {% endif %}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% set available = true %}
+                                {% for index, orderItem in order.orderItems %}
+                                    <tr>
+                                        <td>{{ index + 1 }}.</td>
+                                        <td>{{ orderItem.item.itemName | default('') }}</td>
+                                        {% if chickenCheck == 0 %}
+                                            <td class="text-center">{{ orderItem.quantity | default('') }}</td>
+                                            <td class="text-center">
+                                                {% if orderItem.isAvailable == true %}
+                                                    <i class="fa fa-check green"></i>
+                                                {% else %}
+                                                    <i class="fa fa-times red"></i>
+                                                    {% set available = false %}
+                                                {% endif %}
+                                            </td>
+                                        {% else %}
+                                            <td class="text-center">{{ orderItem.quantity | default('') }}</td>
+                                            <td class="text-center">{{ orderItem.isAvailableQty | default('') }}</td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div style="clear: both"></div>
+                        </div>
+
+                        {% if invalidMessage is not empty %}
+                            <div class="alert alert-danger" style="margin-bottom: 0; padding: 2px;">
+                                {{ invalidMessage|default('') }}
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+
+        <a class="btn blue red order-cancel-modal-action">
+            Order Cancel
+        </a>
+        {% if available == false and order.orderItemType == true %}
+            <a class="btn blue delete-list-btn" href="{{ path('order_update', {"id": order.id}) }}" target="_blank">
+                Edit
+            </a>
+        {% elseif availableCheck == false and order.orderItemType == false %}
+            <a class="btn blue delete-list-btn" href="{{ path('order_update', {"id": order.id}) }}" target="_blank">
+                Edit
+            </a>
+        {% elseif (orderInfoValid) %}
+            <a class="btn blue order-hold-modal-action">
+                Order Hold
+            </a>
+
+            <a class="btn green delete-list-btn" href="{{ path('order_approve', {"id": order.id}) }}">
+                Order Approve
+            </a>
+        {% endif %}
+
+        <button title="Close" type="button" class="btn red" data-dismiss="modal">Close</button>
+    </div>
+</div>
+
+{{ include('RbsSalesBundle:Order:_orderModalActionForm.html.twig') }}

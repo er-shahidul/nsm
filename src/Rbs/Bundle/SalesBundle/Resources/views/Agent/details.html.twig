@@ -1,0 +1,136 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : Agent Details {% endblock %}
+
+{% block body %}
+
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    Agent Details
+                </div>
+            </div>
+
+            <div class="portlet-body">
+                <div style="float: right;margin-right: 5px;">{{ include('_elements/_back_to_list_button.html.twig', {url: path('agents_home'), label: 'Back to List', 'icon': 'chevron-left'}) }}</div>
+                <div style="float: right;margin-right: 5px;">{{ include('_elements/_back_to_list_button.html.twig', {url: path('agent_bank_individual_add', {'id': agent.id} ), label: 'Add Bank', 'icon': 'plus'}) }}</div>
+
+                <div class="dataTables_wrapper no-footer">
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="portlet">
+                                <div class="portlet-body">
+                                    <table class="table">
+                                        <tr>
+                                            <th colspan="4"><h4>Agent Profile Information</h4></th>
+                                        </tr>
+                                        <tr>
+                                            <th><h4 class="modal-title">Agent ID <span class="badge badge-primary">{{ agent.agentID }}</span></h4></th>
+                                            <td>
+                                                {% if agent.user.profile.path != null %}
+                                                    <img src='{{ asset('uploads/user/'~agent.user.profile.path) }}' style="width: 60px;height: 60px;"/>
+                                                {% else %}
+                                                    <img src='{{ asset('assets/admin/layout/img/avatar.png') }}' style="width: 60px;height: 60px;"/>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Agent Name</th>
+                                            <td>{{ agent.user.profile.fullname | default('') }}</td>
+                                            <th>Cellphone</th>
+                                            <td>{{ agent.user.profile.cellphone | default('') }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Created By</th>
+                                            <td>{{ agent.createdBy }}</td>
+                                            <th>Created Date</th>
+                                            <td>{{ agent.createdAt | date(php_date_format) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Current Balance</th>
+                                            <td>{{ agentCurrentBalance | number_format(2, '.', ',') }}</td>
+                                            <th>VIP</th>
+                                            <td>{% if agent.vIP %} Yes {% else %} Not {% endif %}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Opening balance</th>
+                                            <td>{{ agent.openingBalance | number_format(2, '.', ',') }}</td>
+                                            <th>Location</th>
+                                            <td>{{ agent.user.upozilla.name | default('') }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Depo</th>
+                                            <td>{{ agent.depo.name | default('') }}</td>
+                                            <th>Group</th>
+                                            <td>{{ agent.agentGroup.label|default('') }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Item Type</th>
+                                            <td>{{ agent.itemType.itemType|default('ALL') }}</td>
+                                            <th>Address</th>
+                                            <td>{{ agent.user.profile.address | default('') }}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="portlet">
+                                <div class="portlet-body">
+                                    <table class="table">
+                                        <tr>
+                                            <th colspan="2">
+                                                <h4>Agent Login Information</h4>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>Agent Username</th>
+                                            <td>{{ agent.user.username | default('') }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Email</th>
+                                            <td>{{ agent.user.email | default('') }}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="portlet">
+                                <div class="portlet-body">
+                                    <table class="table">
+                                        <tr>
+                                            <th colspan="3">
+                                                <h4>Agent Bank Information</h4>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td>Bank Name</td>
+                                            <td>Branch Name</td>
+                                            <td>Bank Code</td>
+                                        </tr>
+                                        {% for index, agentBank in agentBanks %}
+                                        <tr>
+                                            <th>{{ agentBank.bank }}</th>
+                                            <th>{{ agentBank.branch }}</th>
+                                            <th>{{ agentBank.code }}</th>
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

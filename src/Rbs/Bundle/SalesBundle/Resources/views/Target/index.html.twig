@@ -1,0 +1,68 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : Target {% endblock %}
+
+{% block body %}
+
+    <div class="modal fade" id="ajax" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{ asset('assets/global/img/loading-spinner-grey.gif') }}" alt="" class="loading">
+                    <span> &nbsp;&nbsp;Loading... </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="ajaxHistory" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{ asset('assets/global/img/loading-spinner-grey.gif') }}" alt="" class="loading">
+                    <span> &nbsp;&nbsp;Loading... </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-list"></i>Target List
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ include('_elements/_back_to_list_button.html.twig', {url: path('target_create'), label: 'Add Target', 'icon': 'plus'}) }}
+
+                <div class="dataTables_wrapper no-footer">
+                    {{ datatable_render_html(datatable) }}
+                    <div style="clear: both"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    'assets/global/plugins/datatables/examples/resources/bootstrap/3/dataTables.bootstrap.css'
+    filter='cssrewrite' output='css/compiled/datatable.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    'assets/global/plugins/datatables/all.min.js'
+    'assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js'
+    'assets/global/plugins/moment.min.js'
+    output='js/compiled/datatable.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {{ datatable_render_js(datatable) }}
+{% endblock %}

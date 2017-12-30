@@ -1,0 +1,16 @@
+xiidea_easy_audit:
+    #resolver: xiidea.easy_audit.default_event_resolver        #Optional
+    entity_class : Rbs\Bundle\CoreBundle\Entity\AuditLog          #Required
+
+    user_property : ~
+    events :                                                   #Optional
+        - security.interactive_login
+        - fos_user.security.implicit_login
+        - fos_user.change_password.edit.completed
+        - security.authentication.failure
+
+    #logger_chanel:
+    #    xiidea.easy_audit.logger.service: ["info", "debug"]
+    #    file.logger: ["!info", "!debug"]
+
+    #Custom Event Resolver Service

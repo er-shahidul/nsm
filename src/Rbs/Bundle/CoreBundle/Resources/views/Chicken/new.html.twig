@@ -1,0 +1,34 @@
+<div class="modal-header portlet-title box blue">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title">New Chicken Set</h4>
+</div>
+<div class="modal-body">
+    {{ form_start(form, {'method': 'POST', attr: { novalidate: 'novalidate'}}) }}
+    <div class="form-group item-selector-container">
+        {{ form_label(form.item) }}
+        <div class="col-md-10">
+            {{ form_widget(form.item) }}
+            <span class="help-block" style="display: none;"><ul class="list-unstyled"><li><span class="glyphicon glyphicon-exclamation-sign"></span> Please select an item</li></ul></span>
+        </div>
+    </div>
+    {{ form_row(form.submit) }}
+    {{ form_end(form) }}
+</div>
+<div class="modal-footer">
+</div>
+
+<script>
+    $('form[name=sale_chicken_set]').submit(function(e){
+        var itemSelectorContainer = $('.item-selector-container');
+
+        if ($(this).find('select').val() == '') {
+            itemSelectorContainer.addClass('has-error');
+            itemSelectorContainer.find('.help-block').show();
+
+            return false;
+        }
+
+        itemSelectorContainer.removeClass('has-error');
+        itemSelectorContainer.find('.help-block').hide();
+    });
+</script>

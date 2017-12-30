@@ -1,0 +1,102 @@
+<div class="col-md-12">
+    <div class="portlet box blue">
+        <div class="portlet-title">
+            <div class="caption">
+                My Profile
+            </div>
+        </div>
+
+        <div class="portlet-body">
+            {{ include('_elements/_back_to_list_button.html.twig', {url: path('homepage'), label: 'Back to Home', 'icon': 'chevron-left'}) }}
+            <div class="dataTables_wrapper no-footer">
+
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="portlet">
+                            <div class="portlet-body">
+                                <table class="table">
+                                    <tr>
+                                        <th>Photo</th>
+                                        <th colspan="3">
+                                            {% if user.profile != null %}
+                                                {% if user.profile.path != null %}
+                                                    <img src='{{ asset(user.profile.getWebPath) }}' style="width: 60px;height: 60px;"/>
+                                                {% else %}
+                                                    <img src='{{ asset('assets/admin/layout/img/avatar.png') }}' style="width: 60px;height: 60px;"/>
+                                                {% endif %}
+                                            {% else %}
+                                                <img src='{{ asset('assets/admin/layout/img/avatar.png') }}' style="width: 60px;height: 60px;"/>
+                                            {% endif %}
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>Name</th>
+                                        {% if user.profile != null %}
+                                            {% if user.profile.fullname != null %}
+                                                <td>{{ user.profile.fullname }}</td>
+                                            {% else %}
+                                                <td>{{ user.username }}</td>
+                                            {% endif %}
+                                        {% else %}
+                                            <td>{{ user.username }}</td>
+                                        {% endif %}
+                                        {% if agent != null %}
+                                            <th>Agent Id</th>
+                                            <td>{{ agent.agentID | default('') }}</td>
+                                        {% else %}
+                                            <th></th>
+                                            <td></td>
+                                        {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <th>Designation</th>
+                                        <td>{{ user.profile.designation | default('N/A') }}</td>
+                                        <th>User Type</th>
+                                        <td>{{ user.userType | default('N/A') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Cellphone</th>
+                                        <td>{{ user.profile.cellphone | default('N/A') }}</td>
+                                        <th>Address</th>
+                                        <td>{{ user.profile.address | default('N/A') }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        {% if not is_granted('ROLE_AGENT') %}
+                        <div class="portlet">
+                            <div class="portlet-body">
+                                <table class="table">
+                                    <tr>
+                                        <th colspan="2">
+                                            <h4>User Login Information</h4>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>Username</th>
+                                        <td>{{ user.username }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email</th>
+                                        <td>{{ user.email }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th><a href="{{ path('my_password_update') }}" class="btn blue">Password Change</a></th>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+
+        </div>
+
+    </div>
+</div>

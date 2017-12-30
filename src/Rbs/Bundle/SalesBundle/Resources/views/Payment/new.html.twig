@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} : Add Payment {% endblock %}
+
+{% block body %}
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-globe"></i>Add Payment
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ include('_elements/_back_to_list_button.html.twig', {url: path('payments_home'), label: 'Back to List', 'icon': 'chevron-left'}) }}
+                {{ form_start(form, {'method': 'POST'}) }}
+
+                {{ form_row(form.agent) }}
+                {{ form_row(form.agentBankBranch) }}
+                {{ form_row(form.amount) }}
+                {{ form_row(form.depositDate) }}
+                {{ form_row(form.fxCx) }}
+                {{ form_row(form.paymentMethod) }}
+                {{ form_row(form.bankAccount) }}
+                {{ form_row(form.remark) }}
+                {#{{ form_row(form.orders) }}#}
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets  filter='cssrewrite'
+    "assets/global/plugins/bootstrap-toastr/toastr.min.css"
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+{% endblock stylesheets %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    "assets/global/plugins/bootstrap-toastr/toastr.min.js"
+
+    "assets/global/plugins/jquery-validation/js/jquery.validate.min.js"
+    "assets/admin/pages/scripts/form-validation.js"
+    "bundles/rbssales/js/paymentOrder.js"
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascripts %}
+{#<script>#}
+{% block documentReady %}
+    {{ parent() }}
+
+    $(".date-month-year-picker").datepicker( {
+    format: "dd-mm-yyyy",
+    viewMode: "default",
+    minViewMode: "default",
+    autoclose: true
+    });
+
+    Payment.init();
+{% endblock documentReady %}

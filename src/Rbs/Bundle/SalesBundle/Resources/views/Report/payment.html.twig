@@ -1,0 +1,96 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : Payment {% endblock %}
+
+{% block body %}
+
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-globe"></i>Payment Report
+                </div>
+            </div>
+            <div class="portlet-body">
+
+                <form method="get" novalidate="novalidate" class="form-inline">
+
+                    <div class="form-group {% if agent is empty %}hidden-print{% endif %}">
+                        <span class="visible-print-inline">Agent:</span>
+                        {{ form_widget(formSearch.agent) }}
+                    </div>
+
+                    <span class="visible-print-inline">Date:</span>
+                    <div class="form-group">
+                        <div class="input-icon right">
+                            <div class="input-group input-daterange">
+                                {{ form_widget(formSearch.start_date) }}
+                                <span class="input-group-addon">to</span>
+                                {{ form_widget(formSearch.end_date) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="daily" name="type" class="btn blue hidden-print">
+                        <input type="submit" value="monthly" name="type" class="btn blue hidden-print">
+                    </div>
+                    <div class="pull-right">
+                        <button type="button" class="btn green hidden-print" onclick="print()">Print</button>
+                    </div>
+                </form>
+
+                <div class="row">
+                    <div class="col-md-12">
+
+                        {% for date, rows in data %}
+                            <table class="table">
+                                <thead>
+                                {% if type == 'monthly' %}
+                                <tr>
+                                    <th class="text-center" colspan="7">{{ date }}</th>
+                                </tr>
+                                {% endif %}
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Sl</th>
+                                    <th>ID</th>
+                                    <th>Agent Name</th>
+                                    <th>Bank</th>
+                                    <th>Branch</th>
+                                    <th class="text-right">Taka</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% set sl = 1 %}
+                                {% set total = 0 %}
+                                {% for row in rows['data'] %}
+                                    <tr>
+                                        <td>{{ row.createdAt|date('d-m-Y') }}</td>
+                                        <td>{{ sl }}</td>
+                                        <td>{{ row.agentID }}</td>
+                                        <td>{{ row.fullName }}</td>
+                                        <td>{{ row.agentBank }}</td>
+                                        <td>{{ row.agentBranch }}</td>
+                                        <td class="text-right">{{ row.amount }}</td>
+                                    </tr>
+                                    {% set sl = sl + 1 %}
+                                    {% set total = total + row.amount %}
+                                {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                <tr class="bold">
+                                    <td colspan="6" class="text-right">Total</td>
+                                    <td class="text-right">{{ total }}</td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}

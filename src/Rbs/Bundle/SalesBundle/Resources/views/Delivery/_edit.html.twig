@@ -1,0 +1,27 @@
+{{ form_start(form) }}
+<div class="modal-header portlet-title blue">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title">Update Delivery Information</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet box">
+
+                <div class="portlet-body">
+                    {{ form_row(form.contactName) }}
+                    {{ form_row(form.contactNo) }}
+                    {{ form_row(form.otherInfo) }}
+                    {{ form_row(form.transportGiven) }}
+                    {{ form_row(form.depo) }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="submit" class="btn green">Save</button>
+</div>
+{{ form_end(form) }}

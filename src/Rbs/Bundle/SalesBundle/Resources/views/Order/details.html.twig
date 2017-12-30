@@ -1,0 +1,307 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : Order Details {% endblock %}
+
+{% block body %}
+
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                   Order Details
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ include('_elements/_back_to_list_button.html.twig', {url: path('orders_home'), label: 'Back to List', 'icon': 'chevron-left'}) }}
+                <div class="dataTables_wrapper no-footer">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="portlet">
+
+                                <div class="portlet-body">
+
+                                    <table class="table">
+                                        <tr>
+                                            <th colspan="4"><h4 class="modal-title">Order No <span class="badge badge-primary">{{ order.id }}</span></h4></th>
+                                        </tr>
+                                        <tr>
+                                            <th>Agent Name</th>
+                                            <td>{{ order.agent.idName }}</td>
+                                            <th>Order Date</th>
+                                            <td>{{ order.createdAt|date("d-m-Y \\a\\t g:ia", "Asia/Dhaka") }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Created By</th>
+                                            <td>{{ order.createdBy.username | default('SMS') }}</td>
+                                            <th>SMS ref.</th>
+                                            <td>{{ order.refSMS.msg | default('N/A') | raw }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Order Amount</th>
+                                            <td>{{ order.totalAmount }}</td>
+                                            <th>Paid Amount</th>
+                                            <td>{{ order.paidAmount }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Location</th>
+                                            <td>{{ order.location.name | default('') }}</td>
+                                            <th>Order Via</th>
+                                            <td>{{ order.orderVia }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Depo</th>
+                                            <td>{{ order.depo.name | default('') }}</td>
+                                            <th>Remarks</th>
+                                            <td>{{ order.remark }}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="portlet">
+                                <div class="portlet-title">
+                                    <div class="caption"> Order Status </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <table class="table">
+                                        <tr>
+                                            <th class="text-center col-md-4">Order State</th>
+                                            {% if order.orderState != 'CANCEL' %}
+                                            <th class="text-center col-md-4">Payment State</th>
+                                            <th class="text-center col-md-4">Delivery State</th>
+                                            {% endif %}
+                                        </tr>
+                                        <tr id="process-actions">
+                                            <td class="text-center">
+                                                {% if order.orderState == 'PENDING' %}
+                                                    {% set orderStateColor = 'warning' %}
+                                                {% elseif order.orderState == 'PROCESSING' %}
+                                                    {% set orderStateColor = 'info' %}
+                                                {% elseif order.orderState == 'HOLD' %}
+                                                    {% set orderStateColor = 'warning' %}
+                                                {% elseif order.orderState == 'CANCEL' %}
+                                                    {% set orderStateColor = 'danger' %}
+                                                {% elseif order.orderState == 'COMPLETE' %}
+                                                    {% set orderStateColor = 'success' %}
+                                                {% endif %}
+
+                                                <span class="{{ 'label label-sm label-'~ orderStateColor }}">{{ order.orderState }}</span>
+                                            </td>
+                                            {% if order.orderState != 'CANCEL' %}
+                                            <td class="text-center">
+                                                {% if order.paymentState == 'PENDING' %}
+                                                    {% set paymentStateColor = 'warning' %}
+                                                {% elseif order.paymentState == 'PARTIALLY_PAID' %}
+                                                    {% set paymentStateColor = 'info' %}
+                                                {% elseif order.paymentState == 'APPROVAL' %}
+                                                    {% set color = 'warning' %}
+                                                {% elseif order.paymentState == 'CREDIT_APPROVAL' %}
+                                                    {% set paymentStateColor = 'info' %}
+                                                {% elseif order.paymentState == 'PAID'%}
+                                                    {% set paymentStateColor = 'success' %}
+                                                {% endif %}
+
+                                                <span class="{{ 'label label-sm label-'~ paymentStateColor }}">{{ order.paymentState }}</span>
+                                            </td>
+                                            <td class="text-center">
+                                                {% if order.deliveryState == 'PENDING' %}
+                                                    {% set deliveryStateColor = 'warning' %}
+                                                {% elseif order.deliveryState == 'READY' %}
+                                                    {% set deliveryStateColor = 'info' %}
+                                                {% elseif order.deliveryState == 'HOLD' %}
+                                                    {% set deliveryStateColor = 'warning' %}
+                                                {% elseif order.deliveryState == 'PARTIALLY_SHIPPED' %}
+                                                    {% set deliveryStateColor = 'info' %}
+                                                {% elseif order.deliveryState == 'SHIPPED' %}
+                                                    {% set deliveryStateColor = 'success' %}
+                                                {% endif %}
+
+                                                <span class="{{ 'label label-sm label-'~ deliveryStateColor }}">{{ order.deliveryState }}</span>
+                                            </td>
+                                            {% endif %}
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="portlet">
+                                <div class="portlet-title">
+                                    <div class="caption"> Order Items </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Sl</th>
+                                            <th>Item</th>
+                                            <th>Quantity</th>
+                                            <th>Delivered Qty</th>
+                                            <th>Price</th>
+                                            <th>Total Amount</th>
+                                            <th>Paid Amount</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="orderItems">
+                                        {% for index, orderItem in order.orderItems %}
+                                            {% if orderItem.quantity != 0 %}
+                                            <tr>
+                                                <td>{{ index + 1 }}.</td>
+                                                <td>{{ orderItem.item.name | default('') }}</td>
+                                                <td>{{ orderItem.quantity | default('') }}</td>
+                                                <td>{{ deliveredItems[index]['totalDeliveredQuantity'] | default('') }}</td>
+                                                <td>{{ orderItem.price | default('') }}</td>
+                                                <td>{{ orderItem.totalAmount | default('') }}</td>
+                                                <td>{{ orderItem.paidAmount | default('') }}</td>
+                                            </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            {% if order.payments is not empty %}
+                                <div class="portlet">
+                                    <div class="portlet-title partial-delivered-items">
+                                        <div class="caption"> Payment History </div>
+                                    </div>
+                                    <div class="portlet-body partial-delivered-items">
+
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>Sl</th>
+                                                <th>Deposit Date</th>
+                                                <th>Payment ID</th>
+                                                <th>Payment Method</th>
+                                                <th>Bank Name</th>
+                                                <th>Branch Name</th>
+                                                <th>Amount</th>
+                                                <th>Remark</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% set index = 1 %}
+                                            {% for payment in order.payments %}
+                                                {% if payment.paymentMethod == 'BANK' and payment.verified %}
+                                                <tr>
+                                                    <td>{{ index }}.</td>
+                                                    <td>{{ payment.depositDate | date("d-m-Y \\a\\t g:ia", "Asia/Dhaka") }}</td>
+                                                    <td>{{ payment.id | default('') }}</td>
+                                                    <td>{{ payment.paymentMethod | default('') }}</td>
+                                                    <td>{{ payment.bankName | default('') }}</td>
+                                                    <td>{{ payment.branchName | default('') }}</td>
+                                                    <td>{{ payment.amount | default('') }}</td>
+                                                    <td>{{ payment.transactionType == 'CR' ? payment.remark : ''| default('') }}</td>
+                                                </tr>
+                                                {% set index = index + 1 %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if deliveryItems is not empty %}
+                                <div class="portlet">
+                                    <div class="portlet-title partial-delivered-items">
+                                        <div class="caption"> Delivery Items History </div>
+                                    </div>
+                                    <div class="portlet-body partial-delivered-items">
+
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>Sl</th>
+                                                <th>Delivery ID</th>
+                                                <th>Item Name</th>
+                                                <th>Quantity</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for index, deliveryItem in deliveryItems %}
+                                                <tr>
+                                                    <td>{{ index + 1 }}.</td>
+                                                    <td>{{ deliveryItem.delivery.id }}</td>
+                                                    <td>{{ deliveryItem.orderItem.item.name }}</td>
+                                                    <td>{{ deliveryItem.qty }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if auditLogs is not empty %}
+                                <div class="portlet">
+                                    <div class="portlet-title partial-delivered-items">
+                                        <div class="caption"> Action History </div>
+                                    </div>
+                                    <div class="portlet-body partial-delivered-items">
+
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Action</th>
+                                                    <th>By</th>
+                                                    <th>At</th>
+                                                    <th>Remarks</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for auditLog in auditLogs %}
+                                                <tr>
+                                                    <td>{{ auditLog.type }}</td>
+                                                    <td>{{ auditLog.user }}</td>
+                                                    <td>{{ auditLog.eventTime|date("d-m-Y \\a\\t g:ia", "Asia/Dhaka") }}</td>
+                                                    <td>{{ auditLog.reason }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        {% if order.orderState != 'COMPLETE' and order.orderState != 'CANCEL' %}
+                            <a class="btn blue delete-list-btn red" href="{{ path('order_cancel', {"id": order.id}) }}">
+                                Order Cancel
+                            </a>
+                        {% endif %}
+                        {% if order.orderState != 'COMPLETE' and order.orderState != 'CANCEL' and order.orderState != 'HOLD' %}
+                            <a class="btn blue delete-list-btn" href="{{ path('order_hold', {"id": order.id}) }}">
+                                Order Hold
+                            </a>
+                        {% endif %}
+                        {% if order.orderState != 'COMPLETE' and order.orderState != 'CANCEL' and order.orderState == 'HOLD' %}
+                            <a class="btn blue delete-list-btn" href="{{ path('order_approve', {"id": order.id}) }}">
+                                Order Approve
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="deliveryUpdate" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{ asset('assets/global/img/loading-spinner-grey.gif') }}" alt="" class="loading">
+                    <span> &nbsp;&nbsp;Loading... </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

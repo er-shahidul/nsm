@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} : Cash Deposit {% endblock %}
+
+{% block body %}
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-globe"></i> Cash Deposit
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ include('_elements/_back_to_list_button.html.twig', {url: path('cash_deposit_list'), label: 'Back to List', 'icon': 'chevron-left'}) }}
+                {{ form_start(form, {'method': 'POST'}) }}
+                    <div class="form-group">
+                        <label for="deposit" class="col-md-2 control-label required">Deposit Amount</label>
+                        <div class="col-md-4">
+                            {{ form_widget(form.deposit) }}
+                        </div>
+                    </div>
+                    {{ form_row(form.bankName) }}
+                    {{ form_row(form.branchName) }}
+                    {{ form_row(form.depositedAt) }}
+                    {{ form_row(form.depositedBy) }}
+                    {{ form_row(form.remark) }}
+                    <div class="form-group">
+                        <label for="inputEmail12" class="col-md-2 control-label">Slip</label>
+                        <div class="col-md-4">
+                            <div class="input-icon">
+                                <i class="fa fa-folder"></i>
+                                {{ form_widget(form.file, { 'attr': {'class': 'form-control'} }) }}
+                            </div>
+                        </div>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets  filter='cssrewrite'
+    "assets/global/plugins/bootstrap-toastr/toastr.min.css" %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+{% endblock stylesheets %}
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    "assets/global/plugins/bootstrap-toastr/toastr.min.js"
+    "assets/global/plugins/jquery-validation/js/jquery.validate.min.js"
+    "assets/admin/pages/scripts/form-validation.js"
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascripts %}
+{% block documentReady %}
+    {{ parent() }}
+{% endblock documentReady %}

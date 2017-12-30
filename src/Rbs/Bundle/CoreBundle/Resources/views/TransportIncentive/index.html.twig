@@ -1,0 +1,78 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : Transport Commission Chart {% endblock %}
+
+{% block body %}
+    <div class="modal fade" id="ajaxHistory" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{ asset('assets/global/img/loading-spinner-grey.gif') }}" alt="" class="loading">
+                    <span> &nbsp;&nbsp;Loading... </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-list"></i>Transport Commission
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ include('_elements/_back_to_list_button.html.twig', {url: path('transport_incentive_import'), label: 'Import Commission', 'icon': 'plus'}) }}
+                    <div class="dataTables_wrapper no-footer" style="overflow-y: scroll">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px;" rowspan="2">SL</th>
+                                    <th style="width: 150px;" rowspan="2">District</th>
+                                    <th style="width: 150px;" rowspan="2">History</th>
+                                    <th style="width: 150px;" rowspan="2">Station</th>
+                                    {% for depo in depos %}
+                                        <th colspan="{{ itemTypeCount }}">{{ depo['name'] }}</th>
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                {% for depo in depos %}
+                                    {% for itemType in itemTypes %}
+                                        <th>{{ itemType['itemType'] }}</th>
+                                    {% endfor %}
+                                {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% set i = 1 %}
+                            {% for district, transportIncentive in transportIncentivesArr %}
+                                {% set districtRowId = 1 %}
+                                {% set rows = transportIncentive|length %}
+                                {% for station, transport in transportIncentive %}
+                                    <tr>
+                                        {% if districtRowId == 1 %}
+                                        <td style="width: 40px;" rowspan="{{ rows }}">{{ i }}</td>
+                                        <td style="width: 150px;" rowspan="{{ rows }}">{{ district }}</td>
+                                        <td style="width: 150px;" rowspan="{{ rows }}"><a data-target="#ajaxHistory" data-toggle="modal"
+                                                                     href="{{ path('transport_commission_history', {"district":district}) }}">History</a>
+                                        </td>
+                                        {% endif %}
+                                        <td style="width: 150px;">{{ station }}</td>
+                                        {% for depo, trans in transport['data'] %}
+                                            {% for type, tran in trans %}
+                                                <td>{{ tran }}</td>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </tr>
+                                {% set districtRowId = districtRowId+1 %}
+
+                                {% endfor %}
+                                {% set i = i+1 %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div style="clear: both"></div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} : Upload Bank Slip {% endblock %}
+
+{% block body %}
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-globe"></i>Upload Bank Slip
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ include('_elements/_back_to_list_button.html.twig', {url: path('bank_info_list'), label: 'Back to List', 'icon': 'chevron-left'}) }}
+                {{ form_start(form, {'method': 'POST'}) }}
+                    {{ form_row(form.amount) }}
+                    {{ form_row(form.orderRef) }}
+                    {{ form_row(form.remark) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets  filter='cssrewrite'
+    "assets/global/plugins/jquery-multi-select/css/multi-select.css"
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+{% endblock stylesheets %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    "assets/global/plugins/select2/select2.min.js"
+    "assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js"
+
+    "assets/global/plugins/jquery-validation/js/jquery.validate.min.js"
+    "assets/admin/pages/scripts/form-validation.js"
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascripts %}
+
+{% block documentReady %}
+    {{ parent() }}
+    FormValidation.init();
+    $("select[multiple=multiple]").multiSelect({selectableOptgroup: true});
+{% endblock documentReady %}

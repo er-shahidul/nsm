@@ -1,0 +1,7 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : My Profile {% endblock %}
+
+{% block body %}
+    {% include "RbsUserBundle:Profile:show_content.html.twig" %}
+{% endblock body %}

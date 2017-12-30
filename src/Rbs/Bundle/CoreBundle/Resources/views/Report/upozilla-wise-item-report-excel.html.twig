@@ -1,0 +1,27 @@
+<table class="table" style="border: solid 1px">
+
+    <tbody>
+    {% for index , orderItem in orderItems %}
+        <tr style="background-color: #EEEEEE">
+            <th colspan="{{ itemLists|length+1 }}">{{ index }}</th>
+        </tr>
+        <tr style="background-color: #c7c5c5">
+            <th></th>
+            {% for itemId, item in itemLists %}
+                <th>{{ item.name }}</th>
+            {% endfor %}
+        </tr>
+
+        {% for upazila, upazilaItem in orderItems[index] %}
+            <tr>
+                <td>{{ upazila }}</td>
+                {% for itemId, item in itemLists %}
+                    <th>{{ orderItems[index][upazila][itemId]['quantity']|default(0)}}</th>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+
+    {% endfor %}
+    </tbody>
+    <tfoot></tfoot>
+</table>

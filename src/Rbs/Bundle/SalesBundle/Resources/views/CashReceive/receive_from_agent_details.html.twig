@@ -1,0 +1,70 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : Cash Receive From Agent {% endblock %}
+
+{% block body %}
+
+    <div class="modal fade" id="ajax" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{ asset('assets/global/img/loading-spinner-grey.gif') }}" alt="" class="loading">
+                    <span> &nbsp;&nbsp;Loading... </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="ajaxHistory" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{ asset('assets/global/img/loading-spinner-grey.gif') }}" alt="" class="loading">
+                    <span> &nbsp;&nbsp;Loading... </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-globe"></i>Cash Receive {{ depoName }} form Agent
+                </div>
+            </div>
+            <div class="portlet-body">
+
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Sl</th>
+                        <th>Date of Receive</th>
+                        <th>Received Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for cashReceive in cashReceives %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ cashReceive.receivedAt | date('d-m-Y') }}</td>
+                            <td>{{ cashReceive.amount }}</td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : Report {% endblock %}
+
+{% block body %}
+
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    Reports
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ include('_elements/_back_to_list_button.html.twig', {url: path('reports_home'), label: 'Back to List', 'icon': 'chevron-left'}) }}
+                <div class="dataTables_wrapper no-footer">
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+                                <div class="portlet-body">
+
+                                    <table class="table">
+                                        <tr>
+                                            <th><a href="{{ path('report_item') }}">Order Item Report</a></th>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8"/>
+    <title>{% block title %}Nourish Sales System{% endblock %}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+
+    {% block stylesheets %}
+        {% stylesheets
+        'assets/global/plugins/font-awesome/css/font-awesome.min.css'
+        'assets/global/plugins/simple-line-icons/simple-line-icons.min.css'
+        'assets/global/plugins/bootstrap/css/bootstrap.min.css'
+        'assets/global/plugins/uniform/css/uniform.default.css'
+        'assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css'
+        'assets/global/plugins/select2/select2.css'
+        'assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css'
+        'assets/global/css/components-md.css'
+        'assets/global/css/plugins.css'
+        'assets/admin/layout/css/layout.css'
+        'assets/admin/layout/css/themes/default.css'
+        'assets/admin/layout/css/custom.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endblock %}
+
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+
+</head>
+<!-- BEGIN BODY -->
+<body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed-hide-logo page-container-bg-solid">
+<!-- BEGIN HEADER -->
+<div class="page-header navbar navbar-fixed-top">
+    <!-- BEGIN HEADER INNER -->
+    <div class="page-header-inner">
+        <!-- BEGIN LOGO -->
+        <div class="page-logo">
+            <a href="/">
+                <img src="{{ asset('assets/admin/layout/img/logo.png') }}" alt="logo" class="logo-default" height="35" style="margin-top:5px" />
+            </a>
+            <div class="menu-toggler sidebar-toggler hide">
+            </div>
+        </div>
+        <!-- END LOGO -->
+        <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+        <a href="javascript:" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+        </a>
+        <!-- END RESPONSIVE MENU TOGGLER -->
+        <!-- BEGIN TOP NAVIGATION MENU -->
+        {% include ':_elements:_top_left_menu.html.twig' %}
+        <!-- END TOP NAVIGATION MENU -->
+    </div>
+    <!-- END HEADER INNER -->
+</div>
+<!-- END HEADER -->
+<div class="clearfix">
+</div>
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <!-- BEGIN SIDEBAR -->
+    <div class="page-sidebar-wrapper">
+        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+        <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+        <div class="page-sidebar navbar-collapse collapse">
+            <!-- BEGIN SIDEBAR MENU -->
+
+            {{ knp_menu_render('RbsCoreBundle:MenuBuilder:mainMenu',{'currentClass': 'active', 'ancestorClass': 'open active', 'template': 'RbsCoreBundle:Menu:knp_menu.html.twig'}) }}
+
+            <!-- END SIDEBAR MENU -->
+        </div>
+    </div>
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!-- BEGIN PAGE HEADER-->
+            <div class="page-bar">
+                {% block breadcrumb %}{% endblock %}
+            </div>
+            <h3 class="page-title">
+                {% block page_title %}{% endblock %}
+            </h3>
+            <!-- END PAGE HEADER-->
+            {{ include(':_elements:flash-messages.html.twig') }}
+            {% block body %}{% endblock %}
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!-- END CONTENT -->
+
+</div>
+<!-- END CONTAINER -->
+<!-- BEGIN FOOTER -->
+<div class="page-footer">
+    <div class="page-footer-inner">
+        2016 &copy; Right Brain Solution Ltd.
+    </div>
+    <div class="scroll-to-top">
+        <i class="icon-arrow-up"></i>
+    </div>
+</div>
+<!-- END FOOTER -->
+
+{% block javascripts %}
+
+    {% javascripts
+    'bundles/fosjsrouting/js/router.js'
+    'js/fos_js_routes.js'
+    'assets/global/plugins/jquery.min.js'
+    'assets/global/plugins/jquery-migrate.min.js'
+    'assets/global/plugins/bootstrap/js/bootstrap.min.js'
+    'assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js'
+    'assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js'
+    'assets/global/plugins/jquery.blockui.min.js'
+    'assets/global/plugins/jquery.cokie.min.js'
+    'assets/global/plugins/uniform/jquery.uniform.min.js'
+    'assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js'
+    'assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js'
+    'assets/global/plugins/bootbox/bootbox.min.js'
+    'assets/global/plugins/select2/select2.min.js'
+    'assets/global/plugins/jquery-inputmask/inputmask/jquery.inputmask.js'
+    'assets/global/plugins/jquery-inputmask/inputmask/jquery.inputmask.numeric.extensions.js'
+    'assets/global/scripts/metronic.js'
+    'assets/admin/layout/scripts/layout.js'
+    'assets/admin/layout/scripts/app.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+{% endblock %}
+
+<script>
+    jQuery(document).ready(function() {
+        {% block documentReady %}
+        Metronic.init();
+        Layout.init();
+        App.init();
+        {% endblock documentReady %}
+    });
+</script>
+
+</body>
+</html>

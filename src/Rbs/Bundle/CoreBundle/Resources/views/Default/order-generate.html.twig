@@ -1,0 +1,29 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-globe"></i>SMS Emulator's
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ form_start(form, {'method': 'POST', attr: { novalidate: 'novalidate'}}) }}
+                {{ form(form) }}
+                {{ form_end(form) }}
+                <div style="clear: both"></div>
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

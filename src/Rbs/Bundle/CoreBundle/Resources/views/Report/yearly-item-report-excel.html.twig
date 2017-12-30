@@ -1,0 +1,28 @@
+<table class="table-bordered table-striped table-condensed flip-content">
+    <thead class="flip-content"  style="background: #4b8df8">
+    <tr>
+        <th class="numeric">Month</th>
+        {% for itemId, item in itemLists %}
+            <th>{{ item.name }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for month, yearlyItem in yearlyItems %}
+
+        <tr>
+            <td>{{ month }}</td>
+            {% for itemId, item in itemLists %}
+                <th>{{ yearlyItems[month][itemId]['quantity']|default(0)}}</th>
+            {% endfor %}
+        </tr>
+
+    {% endfor %}
+    <tr>
+        <td>Grand Total</td>
+        {% for itemId, item in itemLists %}
+            <th>{{ item.total|default(0) }}</th>
+        {% endfor %}
+    </tr>
+    </tbody>
+</table>

@@ -1,0 +1,9 @@
+.dataTables_wrapper .no-footer{
+    clear: both;
+}
+.green{
+    color: green;
+}
+.red{
+    color: red;
+}

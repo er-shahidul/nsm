@@ -1,0 +1,53 @@
+<div class="action-content-cancel" style="display: none">
+    <div class="modal-header portlet-title blue">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h4 class="modal-title">Cancel Confirmation</h4>
+    </div>
+    <form action="{{ path('order_cancel', {id: order.id}) }}" method="post" class="action-content-form">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="portlet box">
+
+                        <div class="portlet-body">
+                            <label for="cancel-reason">Reason (if any)</label>
+                            <textarea id="cancel-reason" name="reason" class="form-control"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn blue red"> Yes, I want cancel this order. </button>
+            <a class="btn blue blue cancel-submit"> Back </a>
+        </div>
+    </form>
+</div>
+
+<div class="action-content-hold" style="display: none">
+    <div class="modal-header portlet-title blue">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h4 class="modal-title">Hold Confirmation</h4>
+    </div>
+    <form action="{{ path('order_hold', {id: order.id}) }}" method="post" class="action-content-form">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="portlet box">
+
+                        <div class="portlet-body">
+                            <label for="hold-reason">Reason (if any)</label>
+                            <textarea id="hold-reason" name="reason" class="form-control"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn blue red"> Yes, I want hold this order. </button>
+            <a class="btn blue blue cancel-submit"> Back </a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,86 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : My Doc {% endblock %}
+
+{% block body %}
+
+    <div class="modal fade" id="ajaxSummeryView" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{ asset('assets/global/img/loading-spinner-grey.gif') }}" alt="" class="loading">
+                    <span> &nbsp;&nbsp;Loading... </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-list"></i> My Doc
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ include('_elements/_back_to_list_button.html.twig', {url: path('my_doc_add'), label: 'Upload Document', 'icon': 'plus'}) }}
+
+                <div class="dataTables_wrapper no-footer">
+
+                    <div class="col-md-12">
+                        <div class="portlet-title">
+                            <div class="caption">
+
+                            </div>
+                        </div>
+
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>SL</th>
+                                    <th>Type</th>
+                                    <th>Remark</th>
+                                    <th>View</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for index, doc in docs %}
+                                <tr>
+                                    <td class="col-md-1 bold">{{ index + 1 }}</td>
+                                    <td class="col-md-1 bold">{{ doc.fileType }}</td>
+                                    <td class="col-md-1 bold">{{ doc.remark }}</td>
+                                    <td class="col-md-1 bold">
+                                        {% if doc.path != null %}
+                                            {% set split = doc.path|split('.') %}
+                                            {% set ext = split[1] %}
+                                        {% else %}
+                                            {% set ext = 'none' %}
+                                        {% endif %}
+
+                                        {% if ext != 'none' %}
+                                            <a class="btn btn-xs" onclick="javascript: window.open('{{ asset('uploads/sales/agent-documents/'~doc.path) }}')">
+                                                <i class="fa fa-file"></i>
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="clear: both"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

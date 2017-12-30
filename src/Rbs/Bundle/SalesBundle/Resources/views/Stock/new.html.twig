@@ -1,0 +1,26 @@
+<div class="modal-header portlet-title box blue">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title">Add Stock Quantity</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+           <label>Item Name : {{ stock.item.name }} </label>
+        </div>
+        <div class="col-md-12">
+            {{ form_start(form, {'method': 'POST'}) }}
+            {{ form_widget(form.stockID, {'attr': { 'value': stock.id } }) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+</div>
+<script>
+    jQuery(document).ready(function() {
+        $('.date-picker').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true
+        });
+    });
+</script>

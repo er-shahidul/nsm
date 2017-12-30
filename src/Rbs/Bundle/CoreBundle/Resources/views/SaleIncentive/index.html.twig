@@ -1,0 +1,118 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : Sale Incentives {% endblock %}
+
+{% block body %}
+    <div class="modal fade" id="ajaxHistory" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{ asset('assets/global/img/loading-spinner-grey.gif') }}" alt="" class="loading">
+                    <span> &nbsp;&nbsp;Loading... </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-list"></i>Sale Incentives
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ include('_elements/_back_to_list_button.html.twig', {url: path('sale_incentive_import'), label: 'Import Commission', 'icon': 'plus'}) }}
+                    <div class="dataTables_wrapper no-footer">
+                        <div class="col-md-12">
+                            <div class="portlet-title">
+                                <div class="caption bold"><u>Month</u>
+                                    <a data-target="#ajaxHistory" data-toggle="modal" href="{{ path('sale_incentive_monthly_history') }}">History</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% if saleIncentiveA|length > 0  %}
+
+                        {% set i = 0 %}
+                        {% for index, saleIncentives in saleIncentiveA %}
+
+                            <div class="col-md-12">
+                                <div class="portlet-title">
+                                    <div class="caption bold">
+                                        {% for groupName in groupMonth[i] %}
+                                            {{ groupName }} /
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <table class="table table-bordered table-striped">
+                                    <tbody>
+                                        <tr>
+                                            {% for group in saleIncentives %}
+                                                <td class="col-md-1">{{ group['quantity']/1000 }} {{ labelTon }}</td>
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            {% for group in saleIncentives %}
+                                                <td class="col-md-1">{{ group['amount'] }} {{ labelPerKg }}</td>
+                                            {% endfor %}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% set i = i + 1 %}
+                        {% endfor %}
+
+                        {% endif %}
+
+                        <div class="col-md-12">
+                            <div class="portlet-title">
+                                <div class="caption" style="font-weight: bolder;"><u>Year</u>
+                                    <a data-target="#ajaxHistory" data-toggle="modal" href="{{ path('sale_incentive_yearly_history') }}">History</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if saleIncentiveB|length > 0  %}
+
+                        {% set j = 0 %}
+                            {% for index, saleIncentives in saleIncentiveB %}
+
+                            <div class="col-md-12">
+                                <div class="portlet-title">
+                                    <div class="caption bold">
+
+                                        {% for groupName in groupYear[j] %}
+                                            {{ groupName }} /
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <table class="table table-bordered table-striped">
+                                    <tbody>
+                                        <tr>
+                                            {% for group in saleIncentives %}
+                                                <td class="col-md-1">{{ group['quantity']/1000 }} {{ labelTon }}</td>
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            {% for group in saleIncentives %}
+                                                <td class="col-md-1">{{ group['amount'] }} {{ labelPerKg }}</td>
+                                            {% endfor %}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% set j = j + 1 %}
+                        {% endfor %}
+
+                        {% endif %}
+
+                    <div style="clear: both"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}
+
+

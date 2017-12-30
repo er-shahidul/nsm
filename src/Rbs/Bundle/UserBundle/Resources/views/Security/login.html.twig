@@ -1,0 +1,83 @@
+{% extends "::base-login.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+    {% block fos_user_content %}
+
+        {% if error %}
+            <div class="alert alert-danger">
+                <button class="close" data-dismiss="alert"></button>
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            <div class="page-body">
+                {#{% set avatar = profileImagePath(app.user.avatar) %}#}
+                {#{% set avatarUrl = avatar ? image(avatar).resize(200,200) :  asset('img/avatar-default.png') %}#}
+                {#<div class="page-lock-img" style="background-image: url('{{ avatarUrl }}')"></div>#}
+
+                <!-- Demo image  -->
+                <img class="page-lock-img" src="../../assets/admin/pages/media/profile/profile.jpg" alt="">
+                <!-- Demo image  -->
+
+                <div class="page-lock-info">
+                    <h1>{{ app.user.username }}</h1>
+                    <div class="relogin">
+                        <a href="{{ path('homepage') }}">Go to home</a> | <a href="{{ path('fos_user_security_logout') }}">Not {{app.user.username}} ?</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <!-- BEGIN LOGIN FORM -->
+            <form class="login-form" action="{{ path("fos_user_security_check") }}" method="post">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                <h3 class="form-title">NSM Login</h3>
+                <div class="alert alert-danger display-hide">
+                    <button class="close" data-close="alert"></button>
+                        <span> Enter any username and password. </span>
+                </div>
+
+                <div class="form-group">
+                    <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+                    <label class="control-label visible-ie8 visible-ie9">{{ 'security.login.username'|trans }}</label>
+                    <div class="input-icon">
+                        <i class="fa fa-user"></i>
+                        <input class="form-control placeholder-no-fix" type="text" placeholder="Username" name="_username" value="{{ last_username }}" required="required"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label visible-ie8 visible-ie9">{{ 'security.login.password'|trans }}</label>
+                    <div class="input-icon">
+                        <i class="fa fa-lock"></i>
+                        <input class="form-control placeholder-no-fix" type="password" placeholder="Password"  id="password" name="_password" required="required"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox">
+                        <input type="checkbox" id="remember_me" name="_remember_me" value="on" /> {{ 'security.login.remember_me'|trans }}
+                    </label>
+                    <button type="submit" class="btn green-haze pull-right" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}">
+                        {{ 'security.login.submit'|trans }}
+                        <i class="m-icon-swapright m-icon-white"></i>
+                    </button>
+                </div>
+
+                <div class="forget-password">
+                    <h4>Forgot your password ?</h4>
+                    <p>
+                        no worries, click <a href="{{ path('fos_user_resetting_request') }}"> here </a>
+                        to reset your password.
+                    </p>
+                </div>
+
+            </form>
+            <!-- END LOGIN FORM -->
+
+        {% endif %}
+
+{% endblock fos_user_content %}
+
+

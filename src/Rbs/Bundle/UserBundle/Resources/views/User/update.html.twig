@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} : User update {% endblock %}
+
+{% block body %}
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-globe"></i>Update User
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ include('_elements/_back_to_list_button.html.twig', {url: path('users_home'), label: 'Back to List', 'icon': 'chevron-left'}) }}
+                {% include "RbsUserBundle:User:update_content.html.twig" %}
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets  filter='cssrewrite'
+    "assets/global/plugins/jquery-multi-select/css/multi-select.css"
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+{% endblock stylesheets %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% if user.upozilla %}
+        {% javascripts
+        "assets/global/plugins/select2/select2.min.js"
+        "assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js"
+
+        "assets/global/plugins/jquery-validation/js/jquery.validate.min.js"
+        "assets/admin/pages/scripts/form-validation.js"
+        'bundles/rbsuser/js/user-update.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% else %}
+        {% javascripts
+        "assets/global/plugins/select2/select2.min.js"
+        "assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js"
+
+        "assets/global/plugins/jquery-validation/js/jquery.validate.min.js"
+        "assets/admin/pages/scripts/form-validation.js"
+        'bundles/rbsuser/js/user.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endif %}
+{% endblock javascripts %}
+
+{% block documentReady %}
+    {{ parent() }}
+
+    var upozilla = {{ user.upozilla.id | default(0) }};
+
+    FormValidation.init();
+    $("select[multiple=multiple]").multiSelect({selectableOptgroup: true});
+    $('select.union-selector, select.thana-selector').html('');
+    $('select.zilla-selector').trigger('change');
+{% endblock documentReady %}

@@ -1,0 +1,45 @@
+<div class="modal-header portlet-title box blue">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title">Sales Incentive Yearly History</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            {% if salesIncentiveHistories is empty %}
+                No Sales Incentive Yearly History Found
+            {% else %}
+            <table class="table table-bordered table-striped table-condensed flip-content">
+                <thead class="flip-content">
+                <tr>
+                    <th class="numeric">Sl</th>
+                    <th class="numeric">Date</th>
+                    <th class="numeric">Added By</th>
+                    <th class="numeric">Category</th>
+                    <th class="numeric">Quantity</th>
+                    <th class="numeric">Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for index, history in salesIncentiveHistories %}
+                    <tr>
+                        <td class="numeric">{{ index + 1 }}.</td>
+                        <td class="numeric">{{ history.updatedAt | date('d-m-Y') }}</td>
+                        <td class="numeric">{{ history.updatedBy }}</td>
+                        <td class="numeric">{{ history.category.name }}</td>
+                        <td class="numeric">{{ history.quantity }}</td>
+                        <td class="numeric">{{ history.amount | number_format(2, '.', ',') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    {% if salesIncentiveHistories is not empty %}
+    <a class="btn blue" href="{{ path('sale_incentive_yearly_history_list') }}" target="_blank">
+        More >>
+    </a>
+    {% endif %}
+</div>

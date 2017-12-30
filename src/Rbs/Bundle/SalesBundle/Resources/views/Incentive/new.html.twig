@@ -1,0 +1,85 @@
+
+{% block body %}
+<div class="modal-header portlet-title box blue">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title"> New Incentive</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{{ path('incentive_save') }}" method="post">
+            <table class="table">
+                <tr>
+                    <td>Agent : </td>
+                    <td>
+                        <div class="form-group">
+                            <select class="form-control select2me" name="agent">
+                                {% for agent in agents %}
+                                    <option value="{{ agent.id }}">{{ agent.getIdName | default('') }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Amount : </td>
+                    <td>
+                       <input type="text" name="amount" class="form-control input-small input-mask-amount"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Type : </td>
+                    <td>
+                        <select name="type" class="form-control select2">
+                            <option value="SALE">SALE</option>
+                            <option value="TRANSPORT">TRANSPORT</option>
+                            <option value="TT">TT</option>
+                            <option value="DT">DT</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Duration : </td>
+                    <td>
+                        <select name="duration" class="form-control select2">
+                            <option value="MONTH">MONTH</option>
+                            <option value="YEAR">YEAR</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Details : </td>
+                    <td>
+                       <textarea name="details" class="form-control"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                       <input type="submit" name="submit" class="btn blue" style="float: right;"/>
+                    </td>
+                </tr>
+            </table>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+    {% stylesheets
+    'assets/global/plugins/select2/select2.css'
+    filter='cssrewrite'%}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts
+    'assets/global/plugins/select2/select2.min.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>$('.select2me').select2();</script>
+{% endblock %}

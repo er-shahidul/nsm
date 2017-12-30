@@ -1,0 +1,111 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : District wise item monthly report {% endblock %}
+
+{% block body %}
+
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    District wise item monthly report
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="dataTables_wrapper no-footer">
+
+                    <div class="col-md-12" style="margin-top: 25px;">
+                        <form method="get" novalidate="novalidate">
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <div class="input-icon right">
+                                        {{ form_widget(formSearch.item) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <div class="input-icon right">
+                                        {{ form_widget(formSearch.zilla) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-2">
+                                    <div class="input-icon right">
+                                        {{ form_widget(formSearch.year) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-2">
+                                    <div class="input-icon right">
+                                        {{ form_widget(formSearch.month) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-1">
+                                    <input type="submit" value="Search" class="btn blue">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="portlet-body">
+
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>SL</th>
+                                            <th>Item Name</th>
+                                            <th>Quantity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for index, orderItem in orderItems %}
+                                        <tr>
+                                            <td>{{ index + 1 }}</td>
+                                            <td>{{ orderItem.item.name }}</td>
+                                            <td>{{ orderItem.quantity }}</td>
+                                        </tr>
+                                       {% endfor %}
+                                    </tbody>
+                                    <tfoot></tfoot>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    'assets/global/plugins/select2/select2.css'
+    filter='cssrewrite'%}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+    'assets/global/plugins/select2/select2.min.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

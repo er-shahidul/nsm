@@ -1,0 +1,133 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : Location {% endblock %}
+
+{% block body %}
+
+    <div class="modal fade" id="ajax" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{ asset('assets/global/img/loading-spinner-grey.gif') }}" alt="" class="loading">
+                    <span> &nbsp;&nbsp;Loading... </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="ajaxHistory" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{ asset('assets/global/img/loading-spinner-grey.gif') }}" alt="" class="loading">
+                    <span> &nbsp;&nbsp;Loading... </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-globe"></i>Location List
+                </div>
+            </div>
+            <div class="portlet-body">
+
+
+                <div class="dataTables_wrapper no-footer">
+
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th style="width: 100px;">Sector</th>
+                            <th style="width: 100px;">Zone</th>
+                            <th style="width: 100px;">Region</th>
+                            <th style="width: 120px;">District</th>
+                            <th>Upozilla</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                        {% for sector in locationsSectors %}
+                            <tr>
+                                <td class="col-md-1 bold" style="width: 100px;">{{ sector.name }}</td>
+                                <td>
+                                    <table style="margin-bottom: -9px;margin-top: -9px;margin-left: -9px;" class="table table-bordered table-striped">
+                                        <tbody>
+                                        {% for zone in locationsZones %}
+                                            {% if zone.parentId == sector.id %}
+                                                <tr>
+                                                    <td class="col-md-1 bold" style="width: 100px;">{{ zone.name }}</td>
+                                                    <td>
+
+                                                        <table style="margin-bottom: -9px;margin-top: -9px;margin-left: -9px;" class="table table-bordered table-striped">
+                                                            <tbody>
+                                                            {% for region in locationsRegions %}
+                                                                {% if region.parentId == zone.id %}
+                                                                    <tr>
+                                                                        <td class="col-md-1 bold" style="width: 100px;">{{ region.name }}</td>
+                                                                        <td>
+
+                                                                            <table style="margin-bottom: -9px;margin-top: -9px;margin-left: -9px;" class="table table-bordered table-striped">
+                                                                                <tbody>
+                                                                                {% for district in locationsDistricts %}
+                                                                                    {% if district.parentId == region.id %}
+                                                                                        <tr>
+                                                                                            <td class="col-md-1 bold" style="width: 120px;">{{ district.name }}</td>
+                                                                                            <td>
+
+                                                                                                <table class="table table-bordered table-striped">
+                                                                                                    <tbody>
+                                                                                                    {% for upozilla in locationsUpozillas %}
+                                                                                                        {% if upozilla.parentId == district.id %}
+                                                                                                            <tr>
+                                                                                                                <div>{{ upozilla.name }}</div>
+                                                                                                            </tr>
+                                                                                                        {% endif %}
+                                                                                                    {% endfor %}
+                                                                                                    </tbody>
+                                                                                                </table>
+
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    {% endif %}
+                                                                                {% endfor %}
+                                                                                </tbody>
+                                                                            </table>
+
+                                                                        </td>
+                                                                    </tr>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                            </tbody>
+                                                        </table>
+
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <div style="clear: both"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

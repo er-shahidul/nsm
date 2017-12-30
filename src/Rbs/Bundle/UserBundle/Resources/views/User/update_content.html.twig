@@ -1,0 +1,53 @@
+{{ form_start(form, {'method': 'POST', attr: { novalidate: 'novalidate'}}) }}
+
+    <h4>User Profile Information</h4>
+
+    <div class="form-group">
+        <label for="fullName" class="col-md-2 control-label required">Full Name</label>
+        <div class="col-md-10">
+            {{ form_widget(form.profile.fullName) }}
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="userType" class="col-md-2 control-label required">User Type</label>
+        <div class="col-md-10">
+            {{ form_widget(form.userType) }}
+        </div>
+    </div>
+        {{ form_row(form.profile.designation) }}
+    <div class="form-group">
+        <label for="cellphone" class="col-md-2 control-label required">Cell Phone</label>
+        <div class="col-md-10">
+            {{ form_widget(form.profile.cellphone) }}
+        </div>
+    </div>
+        {{ form_row(form.profile.address) }}
+        {{ form_row(form.zilla, { 'attr': {'class': 'zilla-selector select2me form-control select2-offscreen', 'tabindex': '-1', 'title': 'ZillaZilla'} }) }}
+        {{ form_row(form.upozilla, { 'attr': {'class': 'thana-selector select2me form-control select2-offscreen', 'tabindex': '-1', 'title': 'Thana/UpoZilla'} }) }}
+    <div class="form-group">
+        <label for="parentId" class="col-md-2 control-label">Parent Id</label>
+        <div class="col-md-10">
+            {{ form_widget(form.parentId) }}
+        </div>
+    </div>
+        {{ form_row(form.groups) }}
+
+    <div class="form-group">
+        <label for="inputEmail12" class="col-md-2 control-label">Photo</label>
+        <div class="col-md-4">
+            <div class="input-icon">
+                <i class="fa fa-folder"></i>
+                {{ form_widget(form.profile.file, { 'attr': {'class': 'form-control'} }) }}
+            </div>
+        </div>
+    </div>
+
+    <hr>
+    <h4>User Email Information</h4>
+
+        {{ form_row(form.email) }}
+    <hr>
+    <input id="user_id_hidden" type="hidden" value="{{ user.id }}"/>
+    {{ form_row(form.submit) }}
+
+{{ form_end(form) }}

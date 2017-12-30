@@ -1,0 +1,89 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : Order {% endblock %}
+
+{% block body %}
+
+    <div class="modal fade" id="ajaxSummeryView" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{ asset('assets/global/img/loading-spinner-grey.gif') }}" alt="" class="loading">
+                    <span> &nbsp;&nbsp;Loading... </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-globe"></i>Chick Orders
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ include('RbsSalesBundle:ChickOrder:_filter_form.html.twig') }}
+
+                <div class="pull-right">
+                    <button type="button" class="btn btn-primary hidden-print" onclick="print()">Print</button>
+                </div>
+
+                <form id="chick-order-manage-form">
+                    {% for regionId, orderItems in orderItemResult %}
+                        <div>
+                            <table class="table table-bordered chick-order-region-summary">
+                                <thead>
+                                <tr>
+                                    <th colspan="2"
+                                        class="text-center">{{ regions[regionId] }}</th>
+                                </tr>
+                                <tr>
+                                    <th class="col-md-11">Customer Name</th>
+                                    <th class="col-md-1 text-right">Qty</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for orderItem in orderItems %}
+                                    <tr>
+                                        <td>{{ orderItem.order.agent.user.profile.fullName }}</td>
+                                        <td class="qty text-right">{{ orderItem.quantity }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td class="text-right">Total</td>
+                                    <td class="total-qty text-right"></td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    {% endfor %}
+
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <div style="font-size: 20px" class="grand-total text-right">Grand Total: <span></span></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    'bundles/rbssales/js/chick-order.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+{% endblock %}
+
+{% block documentReady %}
+    {{ parent() }}
+
+    ChickOrder.ManageInit();
+{% endblock documentReady %}

@@ -1,0 +1,94 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : SMS {% endblock %}
+
+{% block body %}
+
+<div class="col-md-12">
+    <div class="portlet box blue">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-list"></i>SMS
+            </div>
+        </div>
+
+        <div class="portlet-body">
+            {{ include('_elements/_back_to_list_button.html.twig', {url: path('agent_bank_info_sms'), label: 'Back to List', 'icon': 'chevron-left'}) }}
+            <form action="" method="post" novalidate="novalidate">
+                <div class="portlet">
+                    <div class="portlet-title">
+                        <div class="caption">Agent : {{ agent.getIdName }}</div>
+                    </div>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th width="10%">Select</th>
+                                <th width="10%">Code</th>
+                                <th width="30%">Bank</th>
+                                <th width="30%">Branch</th>
+                                <th width="20%">Cell Phone</th>
+                            </tr>
+                            </thead>
+                            <tbody class="items">
+                            {% for index, agentBank in agentBanks %}
+                                <tr class="form-group">
+                                    <td>
+                                        <input class="agentBank-checkbox" type="checkbox" name="banks[]" value="{{ agentBank.id }}"/>
+                                        <input type="hidden" name="agentID" value="{{ agent.agentID }}"/>
+                                    </td>
+                                    <td>{{ agentBank.code }}</td>
+                                    <td>{{ agentBank.bank }}</td>
+                                    <td>{{ agentBank.branch }}</td>
+                                    <td>{{ agentBank.cellPhone }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <div class="portlet-title">
+                            <div class="caption">Nourish's Bank Information</div>
+                        </div>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th width="10%">Select</th>
+                                <th width="10%">Code</th>
+                                <th width="20%">Name</th>
+                                <th width="30%">Bank</th>
+                                <th width="30%">Branch</th>
+                            </tr>
+                            </thead>
+                            <tbody class="banks">
+                            {% for index, nourishBank in nourishBanks %}
+                                <tr class="form-group">
+                                    <td>
+                                        <input class="nourishBank-checkbox" type="checkbox" name="nourishBanks[]" value="{{ nourishBank.id }}"/>
+                                    </td>
+                                    <td>{{ nourishBank.code }}</td>
+                                    <td>{{ nourishBank.name }}</td>
+                                    <td>{{ nourishBank.branch.bank.name }}</td>
+                                    <td>{{ nourishBank.branch.name }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <div class="footer">
+                            <button type="submit" class="btn blue green" id="send-sms"> Send SMS </button>
+                        </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div style="clear: both"></div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

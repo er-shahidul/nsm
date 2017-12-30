@@ -1,0 +1,80 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Vendor</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Vendorname</th>
+                <td>{{ entity.vendorName }}</td>
+            </tr>
+            <tr>
+                <th>Vendoraddress</th>
+                <td>{{ entity.vendorAddress }}</td>
+            </tr>
+            <tr>
+                <th>Contractperson</th>
+                <td>{{ entity.contractPerson }}</td>
+            </tr>
+            <tr>
+                <th>Contractno</th>
+                <td>{{ entity.contractNo }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ entity.email }}</td>
+            </tr>
+            <tr>
+                <th>Tradelicenseno</th>
+                <td>{{ entity.tradeLicenseNo }}</td>
+            </tr>
+            <tr>
+                <th>Tincertificateno</th>
+                <td>{{ entity.tinCertificateNo }}</td>
+            </tr>
+            <tr>
+                <th>Vatcertificateno</th>
+                <td>{{ entity.vatCertificateNo }}</td>
+            </tr>
+            <tr>
+                <th>Bankaccountno</th>
+                <td>{{ entity.bankAccountNo }}</td>
+            </tr>
+            <tr>
+                <th>Bankaccountname</th>
+                <td>{{ entity.bankAccountName }}</td>
+            </tr>
+            <tr>
+                <th>Branchname</th>
+                <td>{{ entity.branchName }}</td>
+            </tr>
+            <tr>
+                <th>Paymenttype</th>
+                <td>{{ entity.PaymentType }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ entity.status }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('vendor') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('vendor_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

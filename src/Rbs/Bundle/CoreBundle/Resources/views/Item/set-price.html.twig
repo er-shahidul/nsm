@@ -1,0 +1,49 @@
+<div class="action-content-cancel">
+    <form id="item-price-form" action="{{ path('set_item_price', {id: item.id }) }}" method="post" novalidate="novalidate">
+    <div class="modal-header portlet-title blue">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    </div>
+    <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="portlet">
+                        <div class="portlet-title partial-delivered-items">
+                            <div class="caption"> {{ item.name }} </div>
+                        </div>
+                        <div class="portlet-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th width="60%">District</th>
+                                        <th width="20%">Price</th>
+                                        <th width="20%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="items">
+                                    {% for index, location in locations %}
+                                    <tr class="form-group">
+                                        <td><label for="amount-{{ index }}">{{ location.name }}</label></td>
+                                        <td><input id="amount-{{ index }}" type="text" name="amount[{{ location.id }}]" value="{{ itemPrices[location.id]|default(0) }}" class="form-control input-xsmall amount"></td>
+                                        <td>
+                                            {% if index == 0 %}
+                                                <button type="button" class="btn btn-xs blue" id="set-default-price">
+                                                    ৳ Set Default
+                                                </button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn blue green" id="save-item-price"> Save </button>
+        <a class="btn default" data-dismiss="modal"> Close </a>
+    </div>
+    </form>
+</div>

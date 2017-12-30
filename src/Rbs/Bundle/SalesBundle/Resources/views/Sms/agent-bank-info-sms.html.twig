@@ -1,0 +1,62 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : SMS {% endblock %}
+
+{% block body %}
+
+    <div class="modal fade" id="ajax" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="ajaxHistory" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-list"></i>SMS
+                </div>
+            </div>
+            <div class="portlet-body">
+
+                <div class="dataTables_wrapper no-footer">
+
+                    <div class="col-md-12">
+                    {{ form_start(form, {'method': 'POST', 'name': 'agent_form'}) }}
+                        <div class="col-md-6">
+                            {{ form_widget(form.agent) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_widget(form.submit) }}
+                        </div>
+                    {{ form_end(form) }}
+                    </div>
+
+                    <div style="clear: both"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

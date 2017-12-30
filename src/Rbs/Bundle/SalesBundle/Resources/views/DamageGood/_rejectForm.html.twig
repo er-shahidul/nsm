@@ -1,0 +1,26 @@
+<div class="action-damage-good-reject">
+    <div class="modal-header portlet-title blue">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h4 class="modal-title">Reject Confirmation</h4>
+    </div>
+    <form action="{{ path('damage_goods_reject', {id:id}) }}" method="post" class="action-content-form">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="portlet box">
+
+                        <div class="portlet-body">
+                            <label for="cancel-reason">Damage good reject reason (if any)</label>
+                            <textarea id="cancel-reason" name="reason" class="form-control"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn blue red"> Yes, I want reject. </button>
+            <a class="btn blue blue" data-dismiss="modal"> Back </a>
+        </div>
+    </form>
+</div>

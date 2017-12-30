@@ -1,0 +1,30 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+    <h3 class="page-title">
+        Welcome To Admin Panel
+    </h3>
+
+    {% if is_granted("ROLE_SUPER_ADMIN", "ROLE_ADMIN") %}
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat red-intense">
+                <div class="visual">
+                    <i class="fa fa-bar-chart-o"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        {{ creditLimitNotification | default(0) }}
+                    </div>
+                    <div class="desc">
+                        Credit Limit Will Expire
+                    </div>
+                </div>
+                <a class="more" href="{{ path('credit_limit_notification_list') }}">
+                    View more <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

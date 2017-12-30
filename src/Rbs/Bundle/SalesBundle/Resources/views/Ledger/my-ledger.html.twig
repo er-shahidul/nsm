@@ -1,0 +1,122 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : My Ledger {% endblock %}
+
+{% block body %}
+
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-list"></i>My Ledger
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="dataTables_wrapper no-footer">
+
+                    <div class="col-md-12" style="margin-top: 25px;">
+                        <form method="get" novalidate="novalidate" class="form-inline">
+
+                            <div class="form-group">
+                                <div class="input-icon right">
+                                    <div class="input-group input-daterange">
+                                        {{ form_widget(formSearch.start_date) }}
+                                        <span class="input-group-addon">to</span>
+                                        {{ form_widget(formSearch.end_date) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-1">
+                                    <input type="submit" value="Search" class="btn blue hidden-print">
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="pull-right">
+                            <button type="button" class="btn green hidden-print" onclick="print()">Print</button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" style="margin-top: 25px;">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <div class="input-icon right">
+                                    Agent Name: {{ agent.user.username | default('') }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" style="margin-top: 25px;">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Transaction Date</th>
+                                    <th>Details</th>
+                                    <th>Debit Amount</th>
+                                    <th>Credit Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="2" style="text-align: right">Previous Balance: </td>
+                                <td style="text-align: right">{{ agentPreviousDebitLaserTotal|number_format(2, '.', ',') }}</td>
+                                <td style="text-align: right">{{ agentPreviousCreditLaserTotal|number_format(2, '.', ',') }}</td>
+                            </tr>
+                            {% for laser in agentLaser %}
+                                <tr>
+                                    <td class="col-md-1">{{ laser['depositDate'] | date("d-m-Y \\a\\t g:ia", "Asia/Dhaka") }}</td>
+                                    <td class="col-md-1">
+                                        {% if laser['transactionType'] == 'CR' %}
+                                            {{ laser['remark'] | default('') }}
+                                        {% else %}
+                                            {% for id, item in json_decode(laser['remark']) %}
+                                                <div>{{ item.name ~ '(' ~ item.qty ~ 'Kg ' ~ item.amount|number_format(2, '.', ',') ~ 'Tk)'}}</div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </td>
+                                    <td class="col-md-1" style="text-align: right">{% if laser['transactionType'] == 'DR' %}{{ laser['amount']|number_format(2, '.', ',') }}{% endif %}</td>
+                                    <td class="col-md-1" style="text-align: right">{% if laser['transactionType'] == 'CR' %}{{ laser['amount']|number_format(2, '.', ',') }}{% endif %}</td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td class="bold" colspan="2" style="text-align: right">Total: </td>
+                                <td class="bold" style="text-align: right">{{ agentDebitLaserTotal|number_format(2, '.', ',') }}</td>
+                                <td class="bold" style="text-align: right">{{ agentCreditLaserTotal|number_format(2, '.', ',') }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="text-right bold">
+                                    Current Balance:  {{ currentBalance|number_format(2, '.', ',') }} tk
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="clear: both"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    'assets/global/plugins/select2/select2.css'
+    filter='cssrewrite'%}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    'assets/global/plugins/select2/select2.min.js'
+     %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+

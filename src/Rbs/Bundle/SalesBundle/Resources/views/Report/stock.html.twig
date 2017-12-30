@@ -1,0 +1,71 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : Stock {% endblock %}
+
+{% block body %}
+
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-list"></i>Stock Report
+                </div>
+            </div>
+            <div class="portlet-body">
+
+                <form method="get" novalidate="novalidate" class="form-inline" style="margin-bottom: 20px;">
+
+                    <div class="form-group hidden-print">
+                        <span class="visible-print-inline">Agent:</span>
+                        {{ form_widget(formSearch.depo) }}
+                    </div>
+
+                    <div class="form-group hidden-print">
+                        <span class="visible-print-inline">Agent:</span>
+                        {{ form_widget(formSearch.item) }}
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-1">
+                            <input type="submit" value="Search" class="btn blue hidden-print">
+                        </div>
+                    </div>
+                    <div class="pull-right">
+                        <button type="button" class="btn green hidden-print" onclick="print()">Print</button>
+                    </div>
+                </form>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Sl</th>
+                                <th>Name</th>
+                                <th>Item Name</th>
+                                <th>On Hold</th>
+                                <th>On Hand</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% set sl = 1 %}
+                            {% set total = 0 %}
+                            {% for row in stacks %}
+                                <tr>
+                                    <td>{{ sl }}</td>
+                                    <td>{{ row.name }}</td>
+                                    <td>{{ row.itemName }}</td>
+                                    <td>{{ row.onHold }}</td>
+                                    <td>{{ row.onHand }}</td>
+                                </tr>
+                                {% set sl = sl + 1 %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}

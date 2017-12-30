@@ -1,0 +1,141 @@
+<div class="main-content">
+    <div class="modal-header portlet-title blue">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h4 class="modal-title">Order Summary</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="portlet box">
+
+                    <div class="portlet-body">
+                        <div class="no-footer">
+                            <table class="table col-md-6">
+                                <tr><th class="col-md-8">Order Number</th><td class="col-md-4">{{ order.id }}</td></tr>
+                                <tr><th>Agent Name</th><td>{{ order.agent.user.profile.fullName }}</td></tr>
+                                {% if order.createdBy is not null %}
+                                    <tr><th>Created By</th><td>{{ order.createdBy.username|default('') }}</td></tr>
+                                {% endif %}
+                                <tr><th>Order Amount</th><td>{{ order.totalAmount|number_format(2) }}</td></tr>
+                                {#<tr><th>Paid Amount</th><td>{{ order.paidAmount|number_format(2) }}</td></tr>#}
+                                <tr><th>Remarks</th><td>{{ order.remark }}</td></tr>
+                                <tr><th></th><td></td></tr>
+                            </table>
+
+                            <table class="table-bordered table-striped table-condensed flip-content col-md-12">
+                                <thead>
+                                <tr>
+                                    <th class="col-md-2">Date</th>
+                                    <th class="col-md-3">Bank</th>
+                                    <th class="col-md-4">Branch</th>
+                                    <th class="text-right col-md-1">Deposited Amount</th>
+                                    <th class="text-right col-md-1">Actual Amount</th>
+                                    <th class="text-right col-md-1">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% set available = true %}
+                                {% for index, payment in payments %}
+                                    {% if payment.transactionType == 'CR' %}
+                                    <tr>
+                                        <td>{{ payment.depositDate|date("d-m-Y \\a\\t g:ia", "Asia/Dhaka") }}</td>
+                                        <td>{{ payment.bankAccount.branch.bank.name }}</td>
+                                        <td>{{ payment.bankAccount.branch.name }}</td>
+                                        <td class="text-right"><input type="hidden" name="deposit_amount" class="deposit_amount" value="{{ payment.depositedAmount }}"><span id="amount" class="hidden">{{ payment.depositedAmount }}</span>{{ payment.depositedAmount|number_format(2) }}</td>
+                                        <td class="text-right">
+                                            {% if payment.amount %}
+                                                {{ payment.amount|number_format(2) }}
+                                            {% else %}
+                                                <div class="actual-amount-new">0</div>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-right">
+
+                                            {% set difference = date(payment.createdAt|date("Y/m/d", "Asia/Dhaka")).diff(date('now'|date("Y/m/d", "Asia/Dhaka"))) %}
+                                            {% set leftDays = difference.days %}
+
+                                            {% if 7 > leftDays|number_format %}
+                                                {% if payment.verified %}
+                                                    {{ 'VERIFIED' }}
+                                                {% else %}
+                                                    <div class="btn-group-vertical btn-group-solid btn-group btn-group-xs payment-action-buttons">
+                                                        <button type="button" value="{{ payment.id }}" data-id="payment-amount-verified" id="" class="btn blue">Approve</button>
+                                                        <button type="button" value="{{ payment.id }}" data-id="payment-delete" id="" class="btn red">Reject</button>
+                                                    </div>
+                                                {% endif %}
+                                            {% else %}
+                                                <span> Amount Date Expired</span>
+                                            {% endif %}
+
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if payments is empty %}
+                                    <tr><td colspan="6">No Payment Added. <a href="{{ path('payment_create') }}">Click Here to Add a Payment</a></td></tr>
+                                {% endif %}
+                                </tbody>
+                                <tfoot>
+                                {% if isOverCredit == true and order.agent.VIP != true %}
+                                    <tr><td colspan="6">
+                                            <div class="alert alert-danger" style="margin-bottom: 0; padding: 2px;">
+                                                <strong>Notice!</strong> This order amount is over credit.
+                                                {% if is_granted('ROLE_PAYMENT_OVER_CREDIT_APPROVE') == false %}
+                                                    Need another approval by management.
+                                                {% endif %}
+                                            </div>
+                                        </td></tr>
+                                {% endif %}
+                                </tfoot>
+                            </table>
+
+                            <div style="clear: both"></div>
+                            <br><br>
+                            <table class="table-bordered table-striped table-condensed flip-content col-md-12">
+                                <thead>
+                                <tr>
+                                    <th class="col-md-3">Category</th>
+                                    <th class="text-right col-md-1">Remaining <br>Credit Limit</th>
+                                    <th class="text-right col-md-1">Total Amount</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for index, row in creditSummary %}
+                                    <tr>
+                                        <td>{{ row.name }}</td>
+                                        <td class="text-right">{{ row.creditRemain|number_format(2) }}</td>
+                                        <td class="text-right">{{ orderItemCategoryTotal[index]|number_format(2) }}</td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                            <div style="clear: both"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <a class="btn red order-cancel-modal-action">
+            Order Cancel
+        </a>
+        {% if is_granted('ROLE_PAYMENT_OVER_CREDIT_APPROVE') %}
+            <a class="btn green confirmation-btn" href="{{ path('approve_credit_payment', {"id": order.id}) }}" data-title="Do you want to allow to continue with over credit?">
+                {% if isOverCredit %}Credit {% endif %} Payment Approve
+            </a>
+        {% elseif is_granted('ROLE_PAYMENT_APPROVE') %}
+            <a class="btn green confirmation-btn" href="{{ path('approve_payment', {"id": order.id}) }}" data-title="Do you want to approve the payment of this order?">
+                Payment Approve
+            </a>
+        {% endif %}
+        <button title="Close" type="button" class="btn red" data-dismiss="modal">Close</button>
+    </div>
+</div>
+
+{{ include('RbsSalesBundle:Order:_orderModalActionForm.html.twig') }}

@@ -1,0 +1,46 @@
+{% for flashMessage in app.session.flashbag.get('notice') %}
+    <div class="col-md-12">
+        <div class="alert">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ flashMessage }}
+        </div>
+    </div>
+{% endfor %}
+
+{% for flashMessage in app.session.flashbag.get('success') %}
+    <div class="col-md-12">
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ flashMessage }}
+        </div>
+    </div>
+{% endfor %}
+
+{% for flashMessage in app.session.flashbag.get('error') %}
+    <div class="col-md-12">
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ flashMessage }}
+        </div>
+    </div>
+{% endfor %}
+
+{% for flashMessage in app.session.flashbag.get('info') %}
+    <div class="col-md-12">
+        <div class="alert alert-info">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ flashMessage }}
+        </div>
+    </div>
+{% endfor %}
+
+{% for type, messages in app.session.flashbag.all() %}
+    {% for message in messages %}
+        <div class="col-md-12">
+            <div class="alert alert-{{ type }}">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ flashMessage }}
+            </div>
+        </div>
+    {% endfor %}
+{% endfor %}

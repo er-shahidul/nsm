@@ -1,0 +1,9 @@
+    <tr id="order-item-__name__">
+        <td>{{ form_widget(form.item, { 'attr': {}}) }}</td>
+        <td>{{ form_widget(form.quantity, { 'attr': {'class': 'quantity input-mask-number'}}) }}</td>
+        <td class="item-unit text-center"></td>
+        <td class="stock-available text-center"></td>
+        <td class="item-price">{{ form_widget(form.price, { 'attr': {'class': 'price'}}) }}</td>
+        <td>{{ form_widget(form.totalAmount, { 'attr': {'class': 'total_price'}} ) }}</td>
+        <td>{{ form_widget(form.remove) }}</td>
+    </tr>

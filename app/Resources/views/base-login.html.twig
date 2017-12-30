@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8"/>
+    <title>{% block title %}Nourish Sales Login{% endblock %}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+
+    {% block stylesheets %}
+        {% stylesheets
+        'assets/global/plugins/font-awesome/css/font-awesome.min.css'
+        'assets/global/plugins/simple-line-icons/simple-line-icons.min.css'
+        'assets/global/plugins/bootstrap/css/bootstrap.min.css'
+        'assets/global/plugins/uniform/css/uniform.default.css'
+
+        'assets/global/plugins/select2/select2.css'
+        'assets/admin/pages/css/login3.css'
+
+        'assets/global/css/components.css'
+        'assets/global/css/plugins.css'
+        'assets/admin/layout/css/layout.css'
+        'assets/admin/layout/css/themes/darkblue.css'
+        'assets/admin/layout/css/custom.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endblock %}
+
+    <link rel="shortcut icon" href="/favicon.ico">
+</head>
+<!-- END HEAD -->
+
+<!-- BEGIN BODY -->
+<body class="login {{ app.request.locale }}{% block bodyClass %}{% endblock bodyClass %}">
+
+{% block loginCenter %}
+
+    {% block container %}
+
+        <!-- BEGIN LOGO -->
+        <div class="logo">
+
+        </div>
+        <!-- END LOGO -->
+
+        <!-- BEGIN LOGIN -->
+        <div class="content">
+            {% block fos_user_flash_message %}
+                {% for type, messages in app.session.flashbag.all() %}
+                    {% for key, message in messages %}
+                        <div class="alert alert-{{ type }}">
+                            <button class="close" data-dismiss="alert"></button>
+                            {{ message|trans({}, 'FOSUserBundle') }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endblock fos_user_flash_message %}
+
+            <div>
+                {% block fos_user_content %}
+
+                {% endblock fos_user_content %}
+            </div>
+
+        </div>
+        <!-- END LOGIN -->
+
+        <!-- BEGIN COPYRIGHT -->
+        <div class="copyright">
+            2016 &copy; Right Brain Solution Ltd.
+        </div>
+        <!-- END COPYRIGHT -->
+
+        {% block footer %}
+
+        {% endblock %}
+
+    {% endblock container %}
+
+{% endblock loginCenter %}
+
+{% block javascripts %}
+
+    {% javascripts
+    'assets/global/plugins/respond.min.js'
+    'assets/global/plugins/excanvas.min.js'
+
+    'assets/global/plugins/jquery.min.js'
+    'assets/global/plugins/jquery-migrate.min.js'
+    'assets/global/plugins/bootstrap/js/bootstrap.min.js'
+    'assets/global/plugins/jquery.blockui.min.js'
+    'assets/global/plugins/uniform/jquery.uniform.min.js'
+    'assets/global/plugins/jquery.cokie.min.js'
+
+    'assets/global/plugins/jquery-validation/js/jquery.validate.min.js'
+    'assets/global/plugins/select2/select2.min.js'
+
+    'assets/global/scripts/metronic.js'
+    'assets/admin/layout/scripts/layout.js'
+    'assets/admin/layout/scripts/demo.js'
+    'assets/admin/pages/scripts/login.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+{% endblock %}
+
+<script>
+    jQuery(document).ready(function() {
+        {% block documentReady %}
+        Metronic.init();
+        Layout.init();
+        Login.init();
+        Demo.init();
+        {% endblock documentReady %}
+    });
+</script>
+
+</body>
+<!-- END BODY -->
+
+</html>

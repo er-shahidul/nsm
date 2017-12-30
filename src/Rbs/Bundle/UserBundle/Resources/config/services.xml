@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="rbs.user.permission.security_provider.class">Rbs\Bundle\UserBundle\Permission\Provider\SecurityPermissionProvider</parameter>
+
+        <parameter key="rbs.user.permission_builder.class">Rbs\Bundle\UserBundle\Permission\PermissionBuilder</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="rbs_user.registration.form.type" class="Rbs\Bundle\UserBundle\Form\Type\UserForm">
+            <tag name="form.type" alias="rbs_user_bundle_user"/>
+            <argument>%fos_user.model.user.class%</argument>
+        </service>
+
+        <service id="rbs.user.permission.security_provider" class="%rbs.user.permission.security_provider.class%">
+            <tag name="rbs.user.permission_provider" alias="user"/>
+        </service>
+
+        <service id="rbs.user.permission_builder" class="%rbs.user.permission_builder.class%"/>
+
+        <service id="fos_user.group.form.type" class="Rbs\Bundle\UserBundle\Form\Type\GroupForm">
+            <tag name="form.type" alias="fos_user_group"/>
+            <argument>%fos_user.model.group.class%</argument>
+            <argument type="service" id="rbs.user.permission_builder"/>
+        </service>
+
+        <service id="rbs_erp.user.configure_menu_listener" class="Rbs\Bundle\UserBundle\EventListener\ConfigureMenuListener">
+            <tag name="kernel.event_listener" event="core_bundle.menu_main" method="onMenuConfigureMain" priority="999"/>
+            <argument type="service" id="service_container"/>
+        </service>
+
+        <service id="rbs_erp.user.datatable.user" class="Rbs\Bundle\UserBundle\Datatables\UserDatatable">
+            <tag name="sg.datatable.view"/>
+        </service>
+
+        <service id="rbs_erp.group.datatable.group" class="Rbs\Bundle\UserBundle\Datatables\GroupDatatable">
+            <tag name="sg.datatable.view"/>
+        </service>
+
+        <service id="rbs_erp.user.datatables.query"
+                 class="Rbs\Bundle\UserBundle\Service\Datatable\DatatableDataManager">
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="sg_datatables.serializer"/>
+            <argument>%sg_datatables.query%</argument>
+        </service>
+
+    </services>
+
+</container>

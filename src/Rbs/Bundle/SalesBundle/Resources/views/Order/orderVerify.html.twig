@@ -1,0 +1,102 @@
+<div class="main-content">
+    <div class="modal-header portlet-title blue">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h4 class="modal-title">Order Summary</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="portlet box">
+
+                    <div class="portlet-body">
+                        <table class="table table-bordered col-md-6">
+                            <tr>
+                                <th class="col-md-3">Order Number</th>
+                                <td class="col-md-3">{{ order.id }}</td>
+                                <th class="col-md-3">Order Amount</th>
+                                <td class="col-md-3">{{ order.totalAmount|number_format(2) }}</td>
+                            </tr>
+                            <tr>
+                                <th>Agent Name</th>
+                                <td>{{ order.agent.user.profile.fullName }}</td>
+                                <th>Paid Amount</th>
+                                <td>{{ order.paidAmount|number_format(2, '.', ',') }}</td>
+                            </tr>
+                            <tr>
+                                <th>Created By</th>
+                                <td>{% if order.createdBy is not null %}{{ order.createdBy.username|default('') }}{% endif %} </td>
+                                <th>Payment Amount</th>
+                                <td>{% if order.paymentState!='PENDING' %}{{ order.totalPaymentDepositedAmount|number_format(2, '.', ',') }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>Outstanding Balance</th>
+                                <td>{% if outStandingBalance < 0 %}{{ '('~outStandingBalance|abs|number_format(2, '.', ',')~')' }}{% else %}{{ outStandingBalance|number_format(2, '.', ',') }}{% endif %}</td>
+                                <th>Actual Amount</th>
+                                <td>{% if order.paymentState!='PENDING' %}{{ order.totalPaymentActualAmount|number_format(2, '.', ',') }}{% endif %}</td>
+                            </tr>
+
+                            <tr><th>Remarks</th><td colspan="3">{{ order.remark }}</td></tr>
+                        </table>
+
+                        <h4>Order Items</h4>
+                        <table class="table table-bordered table-striped table-condensed flip-content">
+                            <thead>
+                            <tr>
+                                <th class="col-md-1">Sl</th>
+                                <th class="col-md-7">Item</th>
+                                <th class="text-center col-md-2">Quantity</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for index, orderItem in order.orderItems %}
+                                <tr>
+                                    <td>{{ index + 1 }}.</td>
+                                    <td>{{ orderItem.item.itemName | default('') }}</td>
+                                    <td class="text-center">{{ orderItem.quantity | default('') }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <br />
+                        <h4>Action History</h4>
+                        <table class="table table-bordered table-striped table-condensed flip-content">
+                            <thead>
+                            <tr>
+                                <th class="col-md-2">Action</th>
+                                <th class="col-md-2">By</th>
+                                <th class="col-md-3">At</th>
+                                <th class="col-md-5">Remarks</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for auditLog in auditLogs %}
+                                <tr>
+                                    <td>{{ auditLog.type }}</td>
+                                    <td>{{ auditLog.user }}</td>
+                                    <td>{{ auditLog.eventTime|date("d-m-Y \\a\\t g:ia", "Asia/Dhaka") }}</td>
+                                    <td>{{ auditLog.reason }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <div style="clear: both"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <a class="btn red order-cancel-modal-action">
+            Order Cancel
+        </a>
+        <a class="btn green" href="{{ path('order_verify', {"id": order.id}) }}">
+            Verify and Process for Delivery
+        </a>
+        <button title="Close" type="button" class="btn red" data-dismiss="modal">Close</button>
+    </div>
+</div>
+
+{{ include('RbsSalesBundle:Order:_orderModalActionForm.html.twig') }}

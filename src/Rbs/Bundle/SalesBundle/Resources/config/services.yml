@@ -1,0 +1,175 @@
+parameters:
+    brochures_directory: '%kernel.root_dir%/../web/uploads/sales/csv-import'
+services:
+    rbs_erp.sales.configure_menu_listener:
+        class: Rbs\Bundle\SalesBundle\EventListener\ConfigureMenuListener
+        arguments: [@service_container]
+        tags:
+          - { name: kernel.event_listener, event: core_bundle.menu_sales, method: onMenuConfigureMain, priority: 999 }
+
+    appbundle.subscriber.auditlogeventsubscriber:
+        class: Rbs\Bundle\SalesBundle\Subscriber\AuditLogEventSubscriber
+        tags:
+             - { name: easy_audit.event_subscriber }
+
+    rbs.sales.permission.security_provider:
+         class: Rbs\Bundle\SalesBundle\Permission\Provider\SecurityPermissionProvider
+         tags:
+             - { name: rbs.user.permission_provider, alias: sales }
+
+    rbs_erp.sales.datatable.agent:
+        class: Rbs\Bundle\SalesBundle\Datatables\AgentDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.agent.bank:
+        class: Rbs\Bundle\SalesBundle\Datatables\AgentBankDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.credit.limit:
+        class: Rbs\Bundle\SalesBundle\Datatables\CreditLimitDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.target:
+        class: Rbs\Bundle\SalesBundle\Datatables\TargetDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.cash.receive:
+        class: Rbs\Bundle\SalesBundle\Datatables\CashReceiveDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.cash.deposit:
+        class: Rbs\Bundle\SalesBundle\Datatables\CashDepositDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.stock:
+        class: Rbs\Bundle\SalesBundle\Datatables\StockDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.payment:
+        class: Rbs\Bundle\SalesBundle\Datatables\PaymentDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.sms:
+        class: Rbs\Bundle\SalesBundle\Datatables\SmsDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.order:
+        class: Rbs\Bundle\SalesBundle\Datatables\OrderDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.order.depo:
+        class: Rbs\Bundle\SalesBundle\Datatables\OrderDepoDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.order.individual:
+        class: Rbs\Bundle\SalesBundle\Datatables\OrderMyDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.agent.bank.info:
+        class: Rbs\Bundle\SalesBundle\Datatables\AgentsBankInfoDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.agent.bank.info.admin:
+        class: Rbs\Bundle\SalesBundle\Datatables\AgentsBankInfoAdminDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.Vehicle:
+        class: Rbs\Bundle\SalesBundle\Datatables\VehicleDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.my.vehicle:
+        class: Rbs\Bundle\SalesBundle\Datatables\MyVehicleDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.in.out.vehicle:
+        class: Rbs\Bundle\SalesBundle\Datatables\InOutVehicleDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.load.vehicle:
+        class: Rbs\Bundle\SalesBundle\Datatables\LoadVehicleDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.set.vehicle:
+        class: Rbs\Bundle\SalesBundle\Datatables\SetVehicleDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.damage.good:
+        class: Rbs\Bundle\SalesBundle\Datatables\DamageGoodDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.incentive:
+        class: Rbs\Bundle\SalesBundle\Datatables\IncentiveDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.damage.good.admin:
+        class: Rbs\Bundle\SalesBundle\Datatables\DamageGoodAdminDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.order.readable.sms:
+        class: Rbs\Bundle\SalesBundle\Datatables\OrderReadableSmsDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.stock.history:
+        class: Rbs\Bundle\SalesBundle\Datatables\StockHistoryDatatable
+        tags:
+            - { name: sg.datatable.view }
+        arguments: [@security.authorization_checker, @security.token_storage, @twig, @translator, @router, @doctrine.orm.entity_manager, @service_container]
+
+    rbs_erp.sales.datatable.agent.group:
+        class: Rbs\Bundle\SalesBundle\Datatables\AgentGroupDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.datatable.delivery:
+        class: Rbs\Bundle\SalesBundle\Datatables\DeliveryDatatable
+        tags:
+            - { name: sg.datatable.view }
+
+    rbs_erp.sales.registration.form.type:
+        class: Rbs\Bundle\SalesBundle\Form\Type\AgentForm
+        tags:
+            - { name: form.type, alias: rbs_user_bundle_user }
+        arguments: ['%fos_user.model.user.class%']
+
+    rbs_erp.sales.stock_create.listener:
+        class: Rbs\Bundle\SalesBundle\EventListener\StockCreateListener
+        tags:
+            - { name: kernel.event_listener, event: core.item.created, method: onItemCreated }
+        arguments: [@doctrine.orm.entity_manager]
+
+    rbs_erp.sales.depo_create.listener:
+        class: Rbs\Bundle\SalesBundle\EventListener\StockCreateListener
+        tags:
+            - { name: kernel.event_listener, event: core.depo.created, method: onDepoCreated }
+        arguments: [@doctrine.orm.entity_manager]
+
+    rbs_erp.sales.sms_gateway:
+        class: Rbs\Bundle\SalesBundle\Service\SmsGateWay
+        arguments: [%sms_username%, %sms_password%, @guzzle.client.api_crm]
+
+    rbs_erp.sales.service.smssender:
+        class: Rbs\Bundle\SalesBundle\Service\SmsSender
+        arguments: [ @doctrine, @rbs_erp.sales.sms_gateway ]

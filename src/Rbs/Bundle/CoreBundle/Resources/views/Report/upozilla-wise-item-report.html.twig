@@ -1,0 +1,116 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} : District wise item monthly report {% endblock %}
+
+{% block body %}
+
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    District wise item monthly report
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="dataTables_wrapper no-footer">
+
+                    <div class="col-md-12">
+                        <form method="get" novalidate="novalidate" class="item_report" id="item_report">
+
+                            <div class="form-group">
+                                <div class=" col-md-2 input-append date" id="datepicker-year"
+                                     data-date-format="yyyy">
+
+                                    {{ form_widget(formSearch.year, { 'attr': {'class': 'input-small form-control datepicker-year'} }) }}
+                                    <span class="add-on"><i class="icon-th"></i></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-2 input-append date" id="datepicker-month"
+                                     data-date-format="mm">
+                                    {{ form_widget(formSearch.month, { 'attr': {'class': 'input-small form-control datepicker-month'} }) }}
+                                    <span class="add-on"><i class="icon-th"></i></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-1">
+                                    <input type="submit" value="Search" class="btn blue">
+                                </div>
+
+                            </div>
+                        </form>
+
+                        <div class="col-md-1">
+                            <input type="button" value="Export in excel" name="itemReportExcel" id="itemReportExcel" class="btn blue">
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="portlet-body">
+
+                                <table class="table-bordered table-striped table-condensed flip-content" style="border: solid 1px">
+
+                                    <tbody>
+                                    {% for index , orderItem in orderItems %}
+                                    <tr style="background-color: #EEEEEE">
+                                        <th colspan="{{ itemLists|length+1 }}">{{ index }}</th>
+                                    </tr>
+                                    <tr style="background-color: #c7c5c5">
+                                        <th></th>
+                                        {% for itemId, item in itemLists %}
+                                            <th>{{ item.name }}</th>
+                                        {% endfor %}
+                                    </tr>
+
+                                        {% for upazila, upazilaItem in orderItems[index] %}
+                                            <tr>
+                                                <td>{{ upazila }}</td>
+                                                {% for itemId, item in itemLists %}
+                                                    <th>{{ orderItems[index][upazila][itemId]['quantity']|default(0)}}</th>
+                                                {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+
+                                    {% endfor %}
+                                    </tbody>
+                                    <tfoot></tfoot>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        var url = '{{ path('upozilla_wise_item_report') }}';
+    </script>
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    'assets/global/plugins/select2/select2.css'
+    filter='cssrewrite'%}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+    'assets/global/plugins/select2/select2.min.js'
+    'assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js'
+    '@RbsCoreBundle/Resources/public/js/report.js'
+    '@RbsCoreBundle/Resources/public/js/jquery-form-transport.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
